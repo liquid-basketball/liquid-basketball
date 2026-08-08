@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,8 +13,40 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
+// Auto-create database tables if they do not exist
+const initDb = async () => {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS cms_settings (
+                id TEXT PRIMARY KEY,
+                content TEXT
+            );
+            CREATE TABLE IF NOT EXISTS posts (
+                id SERIAL PRIMARY KEY,
+                title TEXT,
+                content TEXT,
+                video_url TEXT,
+                date TEXT
+            );
+        `);
+        console.log('Database tables verified/created.');
+    } catch (err) {
+        console.error('Database init error:', err.message);
+    }
+};
+initDb();
+
 app.use(cors());
 app.use(express.json());
+
+// Helper function to find HTML files whether they are in root or public/
+const getFilePath = (fileName) => {
+    const publicPath = path.join(__dirname, 'public', fileName);
+    if (fs.existsSync(publicPath)) {
+        return publicPath;
+    }
+    return path.join(__dirname, fileName);
+};
 
 // ----------------------------------------------------
 // Middleware: Password Protection for Admin Routes
@@ -27,7 +60,6 @@ const requireAdminAuth = (req, res, next) => {
         return res.status(401).send('Authentication required.');
     }
 
-    // Decode basic auth header (Username:Password)
     const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
     const password = auth[1];
 
@@ -35,16 +67,16 @@ const requireAdminAuth = (req, res, next) => {
         return next();
     } else {
         res.setHeader('WWW-Authenticate', 'Basic realm="Admin Area"');
-        return res.status(401).send('Incorrect password! Please check uppercase/lowercase characters.');
+        return res.status(401).send('Incorrect password!');
     }
 };
 
 // Protect the admin HTML page
 app.get('/admin-secret-portal.html', requireAdminAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin-secret-portal.html'));
+    res.sendFile(getFilePath('admin-secret-portal.html'));
 });
 
-// Protect POST/DELETE endpoints so public users can't publish or delete
+// Protect POST/DELETE endpoints
 app.post('/api/cms', requireAdminAuth, async (req, res) => {
     const cmsData = req.body;
     try {
@@ -85,9 +117,10 @@ app.delete('/api/posts/:id', requireAdminAuth, async (req, res) => {
 // ----------------------------------------------------
 // Public Static Files & Public API Routes
 // ----------------------------------------------------
+// Serve static assets from both public and root directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
-// Fetch CMS Data (Public)
 app.get('/api/cms', async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT id, content FROM cms_settings');
@@ -99,7 +132,6 @@ app.get('/api/cms', async (req, res) => {
     }
 });
 
-// Fetch Blog Posts (Public)
 app.get('/api/posts', async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM posts ORDER BY id DESC');
@@ -109,8 +141,9 @@ app.get('/api/posts', async (req, res) => {
     }
 });
 
+// Catch-all route to serve the main frontend
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(getFilePath('index.html'));
 });
 
 app.listen(PORT, () => {
