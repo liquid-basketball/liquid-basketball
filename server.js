@@ -15,20 +15,15 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' })); // Higher payload limit for base64 photo uploads
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware to verify admin password
-async function verifyAdmin(req, res, next) {
-    const authHeader = req.headers['x-admin-password'];
-    try {
-        const { rows } = await pool.query('SELECT content FROM cms_settings WHERE id = $1', ['admin_password']);
-        const currentPassword = rows.length > 0 ? rows[0].content : 'Baller1!';
-        
-        if (authHeader === currentPassword) {
-            next();
-        } else {
-            res.status(401).json({ error: 'Unauthorized: Incorrect Password' });
-        }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+// Middleware to verify admin password from req.body
+function verifyAdmin(req, res, next) {
+    const { password } = req.body;
+    const currentPassword = process.env.ADMIN_PASSWORD || 'Baller1!';
+
+    if (password === currentPassword) {
+        next();
+    } else {
+        res.status(401).json({ error: 'Unauthorized: Incorrect Password' });
     }
 }
 
@@ -37,20 +32,13 @@ app.post('/api/admin/verify', verifyAdmin, (req, res) => {
     res.json({ success: true });
 });
 
-// Update Admin Password
+// Update Admin Password (Guidance message since environment variable handles this)
 app.post('/api/admin/change-password', verifyAdmin, async (req, res) => {
     const { newPassword } = req.body;
     if (!newPassword) return res.status(400).json({ error: 'New password required.' });
 
-    try {
-        await pool.query(
-            'INSERT INTO cms_settings (id, content) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET content = $2',
-            ['admin_password', newPassword]
-        );
-        res.json({ message: 'Password updated successfully!' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    // Since process.env handles password now, update through hosting dashboard
+    res.json({ message: 'Password verified. To permanently update it, set the ADMIN_PASSWORD environment variable in your dashboard.' });
 });
 
 // Fetch CMS Settings
@@ -67,10 +55,10 @@ app.get('/api/cms', async (req, res) => {
 
 // Save CMS Settings (Protected)
 app.post('/api/cms', verifyAdmin, async (req, res) => {
-    const cmsData = req.body;
+    const { password, ...cmsData } = req.body; // Separate password from CMS data
     try {
         for (const [key, value] of Object.entries(cmsData)) {
-            if (key === 'admin_password') continue; // Managed separately
+            if (key === 'admin_password') continue; 
             await pool.query(
                 'INSERT INTO cms_settings (id, content) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET content = $2',
                 [key, value]
