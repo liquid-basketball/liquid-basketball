@@ -75,7 +75,6 @@
         .sidebar-box { background: var(--light-bg); padding: 1.2rem; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 1.5rem; color: var(--navy-text); }
         .sidebar-box.interview-plug { border-top: 4px solid var(--orange-accent); }
 
-        /* Classy Sponsor Ad Styling */
         .sponsor-card {
             background: #f7fafc;
             border: 1px solid #cbd5e0;
@@ -91,9 +90,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
         }
-        .sponsor-card img:hover {
-            transform: scale(1.02);
-        }
+        .sponsor-card img:hover { transform: scale(1.02); }
         .sponsor-label {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -102,36 +99,6 @@
             margin-bottom: 0.5rem;
             display: block;
         }
-
-        /* Top Bar CMS Control Styles */
-        .cms-top-bar {
-            background: #1A365D;
-            color: white;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-        .cms-top-bar button {
-            background: var(--orange-accent);
-            color: white;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .admin-controls { margin-bottom: 1.5rem; padding: 1rem; background: #eef1f6; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-cms-form { display: none; background: #fff; border: 2px solid var(--logo-blue); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
-        .admin-cms-form.active { display: block; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 0.3rem; color: var(--navy-text); }
-        .form-group input, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
-
-        .btn-blue { background: var(--logo-blue); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-orange { background: var(--orange-accent); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
         .post-card { border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; margin-bottom: 1.5rem; position: relative; }
         .post-card h3 { color: var(--navy-text); font-size: 1.5rem; }
@@ -149,14 +116,6 @@
         .text-btn { background-color: var(--orange-accent); }
         .youtube-btn { background-color: #FF0000; }
 
-        /* Editing Mode Visual Indicator */
-        .editable-active {
-            outline: 2px dashed var(--orange-accent);
-            background-color: rgba(226, 91, 40, 0.05);
-            cursor: text;
-        }
-
-        /* Global Footer Sponsor Styling */
         .footer-sponsor-bar {
             background-color: #3b4453;
             padding: 1.2rem 1rem;
@@ -178,31 +137,15 @@
             border-radius: 4px;
             transition: transform 0.2s;
         }
-        .footer-sponsor-img:hover {
-            transform: scale(1.04);
-        }
+        .footer-sponsor-img:hover { transform: scale(1.04); }
 
         footer { text-align: center; padding: 1.5rem; color: var(--light-bg); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); }
         .footer-logo { height: 30px; width: auto; vertical-align: middle; margin-right: 0.5rem; }
-
-        .delete-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #d9534f;
-            color: white;
-            border: none;
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: none;
-        }
-        .admin-mode .delete-btn { display: inline-block; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <header>
         <div class="brand-logo-container">
             <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
@@ -227,6 +170,7 @@
                 </a>
                 <p class="cms-editable" id="cms-hero-sub">Wichita, KS | Stories, Insights, and Hoops Culture</p>
             </div>
+            
             <div class="newspaper-grid">
                 <div class="main-column">
                     <article class="main-headline">
@@ -239,6 +183,9 @@
                             ✍️ Manuscript writing is in progress with a potential future release.
                         </p>
                     </article>
+
+                    <!-- FRONT PAGE POSTS CONTAINER -->
+                    <div id="homePostsContainer" style="margin-bottom: 2rem;"></div>
 
                     <div class="podcast-box">
                         <span class="tag cms-editable" id="cms-tag-2" style="background: var(--logo-blue);">Now Building</span>
@@ -269,7 +216,6 @@
                         </p>
                     </div>
 
-                    <!-- CLASSY SIDEBAR SPONSOR AD -->
                     <div class="sponsor-card">
                         <span class="sponsor-label">Community Spotlight</span>
                         <a href="mailto:phenomwichita@gmail.com" title="Email Mo Phenom Wichita">
@@ -285,33 +231,12 @@
             </div>
         </section>
 
-        <!-- NEWS & MEDIA (CMS) -->
+        <!-- NEWS & MEDIA -->
         <section id="news" class="tab-content">
-            <h2 class="cms-editable" id="cms-news-header">Liquid Basketball Gazette</h2>
-            <p class="cms-editable" id="cms-news-sub" style="margin-bottom: 1rem;">Latest updates, project progress, podcast news, and media drops.</p>
+            <h2 class="cms-editable" id="cms-news-header">Liquid Basketball Media</h2>
+            <p class="cms-editable" id="cms-news-sub" style="margin-bottom: 1rem;">Latest updates, project progress, podcast news, photos, and media drops.</p>
 
-            <div id="cmsForm" class="admin-cms-form">
-                <h3>Create/Publish New Post</h3>
-                <form id="blogForm">
-                    <div class="form-group">
-                        <label for="postTitle">Post Title</label>
-                        <input type="text" id="postTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="postContent">Post Body</label>
-                        <textarea id="postContent" rows="5" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="videoUrl">YouTube Video Link (Optional)</label>
-                        <input type="url" id="videoUrl">
-                    </div>
-                    <button type="submit" class="btn-orange">Publish Post</button>
-                </form>
-            </div>
-
-            <div id="postsContainer">
-                <!-- Posts dynamic container -->
-            </div>
+            <div id="postsContainer"></div>
         </section>
 
         <!-- CONTACT PAGE -->
@@ -348,7 +273,6 @@
 
     </div>
 
-    <!-- ELEGANT GLOBAL FOOTER AD -->
     <div class="footer-sponsor-bar">
         <div class="footer-sponsor-content">
             <a href="mailto:phenomwichita@gmail.com" title="Inquire about MO Phenom Tryouts">
@@ -373,10 +297,8 @@
             &copy; 2026 Liquid Basketball — Wichita, KS | Projects & Podcast
         </p>
     </footer>
-    <script>
-    let isAdmin = false;
 
-    // Navigation Tabs
+    <script>
     function openTab(evt, tabName) {
         const contents = document.querySelectorAll('.tab-content');
         const buttons = document.querySelectorAll('.nav-btn');
@@ -388,62 +310,6 @@
         if (activeBtn) activeBtn.classList.add('active');
     }
 
-    // Admin Toggle
-    function toggleAdmin() {
-        if (!isAdmin) {
-            const pass = prompt("Enter Administrator Passcode:");
-            if (pass === "admin123") {
-                isAdmin = true;
-                document.getElementById('adminStatus').innerText = "Admin Editing Active";
-                document.getElementById('adminStatus').style.color = "#28a745";
-                document.getElementById('adminLoginBtn').innerText = "Logout Admin";
-                document.getElementById('saveChangesBtn').style.display = "inline-block";
-                document.getElementById('cmsForm').classList.add('active');
-                document.body.classList.add('admin-mode');
-                enableInlineEditing(true);
-            } else if (pass !== null) {
-                alert("Incorrect passcode.");
-            }
-        } else {
-            isAdmin = false;
-            document.getElementById('adminStatus').innerText = "Viewer Mode";
-            document.getElementById('adminStatus').style.color = "white";
-            document.getElementById('adminLoginBtn').innerText = "Admin Login (CMS)";
-            document.getElementById('saveChangesBtn').style.display = "none";
-            document.getElementById('cmsForm').classList.remove('active');
-            document.body.classList.remove('admin-mode');
-            enableInlineEditing(false);
-        }
-    }
-
-    function enableInlineEditing(enable) {
-        const editables = document.querySelectorAll('.cms-editable');
-        editables.forEach(el => {
-            el.contentEditable = enable ? "true" : "false";
-            if (enable) el.classList.add('editable-active');
-            else el.classList.remove('editable-active');
-        });
-    }
-
-    // API: Save CMS Data
-    async function saveFrontPageCMS() {
-        const editables = document.querySelectorAll('.cms-editable');
-        const pageData = {};
-        editables.forEach(el => { if (el.id) pageData[el.id] = el.innerHTML; });
-
-        try {
-            const res = await fetch('/api/cms', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pageData)
-            });
-            if (res.ok) alert('Page changes saved to server database!');
-        } catch (err) {
-            alert('Error saving CMS data to server.');
-        }
-    }
-
-    // API: Load CMS Data
     async function loadFrontPageCMS() {
         try {
             const res = await fetch('/api/cms');
@@ -457,16 +323,19 @@
         }
     }
 
-    // API: Fetch & Render Blog Posts
     async function renderPosts() {
-        const container = document.getElementById('postsContainer');
+        const newsContainer = document.getElementById('postsContainer');
+        const homeContainer = document.getElementById('homePostsContainer');
+
         try {
             const res = await fetch('/api/posts');
             const posts = await res.json();
-            container.innerHTML = '';
+
+            if (newsContainer) newsContainer.innerHTML = '';
+            if (homeContainer) homeContainer.innerHTML = '';
 
             if (posts.length === 0) {
-                container.innerHTML = '<p>No posts published yet.</p>';
+                if (newsContainer) newsContainer.innerHTML = '<p>No posts published yet.</p>';
                 return;
             }
 
@@ -475,58 +344,40 @@
                 article.className = 'post-card';
                 let embedUrl = getEmbedUrl(post.video_url || post.videoUrl);
 
+                let formattedContent = parseLinks(post.content);
+
                 let articleHTML = `
-                    <button class="delete-btn" onclick="deletePost(${post.id})">Delete Post</button>
                     <h3>${escapeHTML(post.title)}</h3>
                     <div class="post-date">Published on ${post.date}</div>
-                    <p>${escapeHTML(post.content).replace(/\n/g, '<br>')}</p>
+                    <div>${formattedContent}</div>
                 `;
+
+                if (post.image_url) {
+                    articleHTML += `<div style="margin-top:1rem;"><img src="${post.image_url}" style="max-width:100%; border-radius:6px;"></div>`;
+                }
+
                 if (embedUrl) {
                     articleHTML += `<div class="video-wrapper"><iframe src="${embedUrl}" allowfullscreen></iframe></div>`;
                 }
+
                 article.innerHTML = articleHTML;
-                container.appendChild(article);
+
+                if ((post.target_page === 'news' || post.target_page === 'both') && newsContainer) {
+                    newsContainer.appendChild(article.cloneNode(true));
+                }
+                if ((post.target_page === 'home' || post.target_page === 'both') && homeContainer) {
+                    homeContainer.appendChild(article.cloneNode(true));
+                }
             });
         } catch (err) {
-            container.innerHTML = '<p>Error loading posts from server.</p>';
+            if (newsContainer) newsContainer.innerHTML = '<p>Error loading posts from server.</p>';
         }
     }
 
-    // API: Publish Post
-    document.getElementById('blogForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const title = document.getElementById('postTitle').value;
-        const content = document.getElementById('postContent').value;
-        const videoUrl = document.getElementById('videoUrl').value;
-        const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-        try {
-            const res = await fetch('/api/posts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, content, videoUrl, date: dateStr })
-            });
-
-            if (res.ok) {
-                document.getElementById('blogForm').reset();
-                renderPosts();
-                alert('New post published to database!');
-            }
-        } catch (err) {
-            alert('Failed to publish post.');
-        }
-    });
-
-    // API: Delete Post
-    async function deletePost(id) {
-        if (confirm('Are you sure you want to delete this post?')) {
-            try {
-                const res = await fetch(`/api/posts/${id}`, { method: 'DELETE' });
-                if (res.ok) renderPosts();
-            } catch (err) {
-                alert('Failed to delete post.');
-            }
-        }
+    function parseLinks(text) {
+        if (!text) return '';
+        const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>').replace(/\n/g, '<br>');
     }
 
     function getEmbedUrl(url) {
@@ -544,6 +395,6 @@
         loadFrontPageCMS();
         renderPosts();
     });
-</script> 
+    </script> 
 </body>
 </html>
