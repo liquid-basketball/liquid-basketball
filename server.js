@@ -6,59 +6,49 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Connect to Cloud Database (Supabase)
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // Higher payload limit for base64 photo uploads
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
-// Middleware to verify admin password from req.body
-function verifyAdmin(req, res, next) {
-    const { password } = req.body;
-    const currentPassword = process.env.ADMIN_PASSWORD || 'Baller1!';
+// ----------------------------------------------------
+// Middleware: Password Protection for Admin Routes
+// ----------------------------------------------------
+const requireAdminAuth = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Baller1!'; // Default fallback
 
-    if (password === currentPassword) {
-        next();
+    if (!authHeader) {
+        res.setHeader('WWW-Authenticate', 'Basic realm="Admin Area"');
+        return res.status(401).send('Authentication required.');
+    }
+
+    // Decode basic auth header (Username:Password)
+    const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const password = auth[1];
+
+    if (password === adminPassword) {
+        return next();
     } else {
-        res.status(401).json({ error: 'Unauthorized: Incorrect Password' });
+        res.setHeader('WWW-Authenticate', 'Basic realm="Admin Area"');
+        return res.status(401).send('Incorrect password! Please check uppercase/lowercase characters.');
     }
-}
+};
 
-// Check Auth Endpoint
-app.post('/api/admin/verify', verifyAdmin, (req, res) => {
-    res.json({ success: true });
+// Protect the admin HTML page
+app.get('/admin-secret-portal.html', requireAdminAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin-secret-portal.html'));
 });
 
-// Update Admin Password (Guidance message since environment variable handles this)
-app.post('/api/admin/change-password', verifyAdmin, async (req, res) => {
-    const { newPassword } = req.body;
-    if (!newPassword) return res.status(400).json({ error: 'New password required.' });
-
-    // Since process.env handles password now, update through hosting dashboard
-    res.json({ message: 'Password verified. To permanently update it, set the ADMIN_PASSWORD environment variable in your dashboard.' });
-});
-
-// Fetch CMS Settings
-app.get('/api/cms', async (req, res) => {
-    try {
-        const { rows } = await pool.query('SELECT id, content FROM cms_settings');
-        const cmsData = {};
-        rows.forEach(row => cmsData[row.id] = row.content);
-        res.json(cmsData);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Save CMS Settings (Protected)
-app.post('/api/cms', verifyAdmin, async (req, res) => {
-    const { password, ...cmsData } = req.body; // Separate password from CMS data
+// Protect POST/DELETE endpoints so public users can't publish or delete
+app.post('/api/cms', requireAdminAuth, async (req, res) => {
+    const cmsData = req.body;
     try {
         for (const [key, value] of Object.entries(cmsData)) {
-            if (key === 'admin_password') continue; 
             await pool.query(
                 'INSERT INTO cms_settings (id, content) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET content = $2',
                 [key, value]
@@ -70,30 +60,12 @@ app.post('/api/cms', verifyAdmin, async (req, res) => {
     }
 });
 
-// Fetch Posts (Filterable by target_page)
-app.get('/api/posts', async (req, res) => {
-    const page = req.query.page;
-    try {
-        let query = 'SELECT * FROM posts ORDER BY id DESC';
-        let params = [];
-        if (page) {
-            query = 'SELECT * FROM posts WHERE target_page = $1 OR target_page = \'both\' ORDER BY id DESC';
-            params = [page];
-        }
-        const { rows } = await pool.query(query, params);
-        res.json(rows);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Create Post (Protected)
-app.post('/api/posts', verifyAdmin, async (req, res) => {
-    const { title, content, videoUrl, imageUrl, targetPage, date } = req.body;
+app.post('/api/posts', requireAdminAuth, async (req, res) => {
+    const { title, content, videoUrl, date } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO posts (title, content, video_url, image_url, target_page, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [title, content, videoUrl, imageUrl, targetPage || 'news', date]
+            'INSERT INTO posts (title, content, video_url, date) VALUES ($1, $2, $3, $4) RETURNING *',
+            [title, content, videoUrl, date]
         );
         res.json(result.rows[0]);
     } catch (err) {
@@ -101,11 +73,37 @@ app.post('/api/posts', verifyAdmin, async (req, res) => {
     }
 });
 
-// Delete Post (Protected)
-app.delete('/api/posts/:id', verifyAdmin, async (req, res) => {
+app.delete('/api/posts/:id', requireAdminAuth, async (req, res) => {
     try {
         await pool.query('DELETE FROM posts WHERE id = $1', [req.params.id]);
         res.json({ message: 'Post deleted successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// ----------------------------------------------------
+// Public Static Files & Public API Routes
+// ----------------------------------------------------
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Fetch CMS Data (Public)
+app.get('/api/cms', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT id, content FROM cms_settings');
+        const cmsData = {};
+        rows.forEach(row => cmsData[row.id] = row.content);
+        res.json(cmsData);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Fetch Blog Posts (Public)
+app.get('/api/posts', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM posts ORDER BY id DESC');
+        res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -115,4 +113,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
