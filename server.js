@@ -24,9 +24,16 @@ const initDb = async () => {
                 title TEXT,
                 content TEXT,
                 video_url TEXT,
+                image_url TEXT,
+                target_page TEXT,
                 date TEXT
             );
         `);
+        
+        // Minor migrations just in case the table already exists without the new columns
+        try { await pool.query(`ALTER TABLE posts ADD COLUMN image_url TEXT;`); } catch(e) {}
+        try { await pool.query(`ALTER TABLE posts ADD COLUMN target_page TEXT DEFAULT 'both';`); } catch(e) {}
+        
     } catch (err) {
         console.error('Database init error:', err.message);
     }
@@ -83,11 +90,12 @@ app.post('/api/cms', requireAdminAuth, async (req, res) => {
 });
 
 app.post('/api/posts', requireAdminAuth, async (req, res) => {
-    const { title, content, videoUrl, date } = req.body;
+    // Added imageUrl and targetPage to the destructured body
+    const { title, content, videoUrl, imageUrl, targetPage, date } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO posts (title, content, video_url, date) VALUES ($1, $2, $3, $4) RETURNING *',
-            [title, content, videoUrl, date]
+            'INSERT INTO posts (title, content, video_url, image_url, target_page, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [title, content, videoUrl, imageUrl, targetPage || 'both', date]
         );
         res.json(result.rows[0]);
     } catch (err) {
