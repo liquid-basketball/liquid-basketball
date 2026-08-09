@@ -149,7 +149,8 @@
     <header>
         <div class="brand-logo-container">
             <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
-                <img src="liquid-basketball-youtube-logo.png" alt="Liquid Basketball Wichita Logo">
+                <!-- Editable Header Logo -->
+                <img src="liquid-basketball-youtube-logo.png" id="cms-header-logo" class="cms-editable-img" alt="Liquid Basketball Wichita Logo">
             </a>
             <div class="brand-title">liquid <span>basketball</span></div>
         </div>
@@ -166,7 +167,8 @@
         <section id="home" class="tab-content active">
             <div class="hero-banner">
                 <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
-                    <img src="liquid-basketball-youtube-logo.png" alt="Liquid Basketball Wichita Cityscape Logo" class="hero-logo-img">
+                    <!-- Editable Hero Logo -->
+                    <img src="liquid-basketball-youtube-logo.png" id="cms-hero-logo" alt="Liquid Basketball Wichita Cityscape Logo" class="hero-logo-img cms-editable-img">
                 </a>
                 <p class="cms-editable" id="cms-hero-sub">Wichita, KS | Stories, Insights, and Hoops Culture</p>
             </div>
@@ -193,7 +195,10 @@
                         <p class="cms-editable" id="cms-podcast-desc" style="margin-top: 0.5rem;">An upcoming podcast series diving into player stories, regional basketball history, and coaching insights.</p>
                         <div style="margin-top: 1rem; background: #fff; padding: 0.8rem; border-radius: 6px; border: 1px solid #ccc;">
                             <p class="cms-editable" id="cms-audio-teaser" style="font-size: 0.85rem; font-weight: bold; color: #666; margin-bottom: 0.3rem;">🎙️ AUDIO TEASER (COMING SOON)</p>
-                            <audio controls style="width: 100%;"><source src="#" type="audio/mpeg"></audio>
+                            <!-- Editable Audio Source -->
+                            <audio controls id="cms-audio-player" style="width: 100%;">
+                                <source src="#" id="cms-audio-src" class="cms-editable-audio" type="audio/mpeg">
+                            </audio>
                         </div>
                     </div>
                 </div>
@@ -219,7 +224,8 @@
                     <div class="sponsor-card">
                         <span class="sponsor-label">Community Spotlight</span>
                         <a href="mailto:phenomwichita@gmail.com" title="Email Mo Phenom Wichita">
-                            <img src="mo-phenom-tryouts.jpg" alt="MO Phenom Wichita Basketball Tryouts">
+                            <!-- Editable Sidebar Image -->
+                            <img src="mo-phenom-tryouts.jpg" id="cms-sidebar-sponsor-img" class="cms-editable-img" alt="MO Phenom Wichita Basketball Tryouts">
                         </a>
                         <p class="cms-editable" id="cms-sponsor-text" style="font-size: 0.8rem; margin-top: 0.6rem; color: var(--navy-text); font-weight: 600;">
                             <a href="mailto:phenomwichita@gmail.com" style="color: var(--logo-blue); text-decoration: none;">
@@ -276,7 +282,8 @@
     <div class="footer-sponsor-bar">
         <div class="footer-sponsor-content">
             <a href="mailto:phenomwichita@gmail.com" title="Inquire about MO Phenom Tryouts">
-                <img src="mo-phenom-tryouts.jpg" alt="MO Phenom Wichita Basketball" class="footer-sponsor-img">
+                <!-- Editable Footer Image -->
+                <img src="mo-phenom-tryouts.jpg" id="cms-footer-sponsor-img" class="footer-sponsor-img cms-editable-img" alt="MO Phenom Wichita Basketball">
             </a>
             <div style="text-align: left; color: #E2E8F0;">
                 <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #CBD5E0;">Featured Youth Program</span>
@@ -292,7 +299,8 @@
     <footer>
         <p>
             <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
-                <img src="liquid-basketball-youtube-logo.png" alt="" class="footer-logo">
+                <!-- Editable Small Footer Logo -->
+                <img src="liquid-basketball-youtube-logo.png" id="cms-footer-logo" alt="" class="footer-logo cms-editable-img">
             </a>
             &copy; 2026 Liquid Basketball — Wichita, KS | Projects & Podcast
         </p>
@@ -315,9 +323,27 @@
             const res = await fetch('/api/cms');
             if (!res.ok) return;
             const pageData = await res.json();
+            
             for (const id in pageData) {
                 const el = document.getElementById(id);
-                if (el) el.innerHTML = pageData[id];
+                if (el) {
+                    const tag = el.tagName.toLowerCase();
+                    
+                    // NEW EDITABLE FEATURES: Check if it's an image, audio source, or regular text content
+                    if (tag === 'img') {
+                        // Apply the Supabase 'photos' bucket URL
+                        el.src = pageData[id];
+                    } else if (tag === 'source') {
+                        // Apply audio URL and tell the parent <audio> player to reload the new track
+                        el.src = pageData[id];
+                        if(el.parentElement && el.parentElement.tagName.toLowerCase() === 'audio') {
+                            el.parentElement.load(); 
+                        }
+                    } else {
+                        // Regular text replacement
+                        el.innerHTML = pageData[id];
+                    }
+                }
             }
         } catch (err) {
             console.error('Error loading CMS data:', err);
@@ -353,6 +379,7 @@
                     <div>${formattedContent}</div>
                 `;
 
+                // Uses the Supabase photo URL saved in your database for posts
                 const img = post.image_url || post.imageUrl;
                 if (img) {
                     articleHTML += `<div style="margin-top:1rem;"><img src="${escapeHTML(img)}" style="max-width:100%; border-radius:6px;"></div>`;
@@ -364,7 +391,6 @@
 
                 article.innerHTML = articleHTML;
 
-                // FIX: Fallback to 'both' if target_page/targetPage is not provided
                 const target = post.target_page || post.targetPage || 'both';
 
                 if ((target === 'news' || target === 'both') && newsContainer) {
