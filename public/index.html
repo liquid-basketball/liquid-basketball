@@ -313,6 +313,7 @@
     async function loadFrontPageCMS() {
         try {
             const res = await fetch('/api/cms');
+            if (!res.ok) return;
             const pageData = await res.json();
             for (const id in pageData) {
                 const el = document.getElementById(id);
@@ -334,7 +335,7 @@
             if (newsContainer) newsContainer.innerHTML = '';
             if (homeContainer) homeContainer.innerHTML = '';
 
-            if (posts.length === 0) {
+            if (!Array.isArray(posts) || posts.length === 0) {
                 if (newsContainer) newsContainer.innerHTML = '<p>No posts published yet.</p>';
                 return;
             }
@@ -352,8 +353,9 @@
                     <div>${formattedContent}</div>
                 `;
 
-                if (post.image_url) {
-                    articleHTML += `<div style="margin-top:1rem;"><img src="${post.image_url}" style="max-width:100%; border-radius:6px;"></div>`;
+                const img = post.image_url || post.imageUrl;
+                if (img) {
+                    articleHTML += `<div style="margin-top:1rem;"><img src="${escapeHTML(img)}" style="max-width:100%; border-radius:6px;"></div>`;
                 }
 
                 if (embedUrl) {
@@ -362,10 +364,13 @@
 
                 article.innerHTML = articleHTML;
 
-                if ((post.target_page === 'news' || post.target_page === 'both') && newsContainer) {
+                // FIX: Fallback to 'both' if target_page/targetPage is not provided
+                const target = post.target_page || post.targetPage || 'both';
+
+                if ((target === 'news' || target === 'both') && newsContainer) {
                     newsContainer.appendChild(article.cloneNode(true));
                 }
-                if ((post.target_page === 'home' || post.target_page === 'both') && homeContainer) {
+                if ((target === 'home' || target === 'both') && homeContainer) {
                     homeContainer.appendChild(article.cloneNode(true));
                 }
             });
