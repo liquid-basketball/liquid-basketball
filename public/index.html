@@ -116,6 +116,44 @@
         .text-btn { background-color: var(--orange-accent); }
         .youtube-btn { background-color: #FF0000; }
 
+        /* Game Layout & Instructions Styling */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .game-layout { grid-template-columns: 1fr; }
+        }
+        .instructions-sidebar {
+            background: var(--light-bg);
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 1.2rem;
+            color: var(--navy-text);
+        }
+        .instructions-sidebar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--navy-text);
+            border-bottom: 2px solid var(--logo-blue);
+            padding-bottom: 0.4rem;
+        }
+        .instructions-sidebar h4 {
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            margin-bottom: 0.4rem;
+            color: var(--orange-accent);
+        }
+        .instructions-sidebar ol, .instructions-sidebar ul {
+            padding-left: 1.2rem;
+            font-size: 0.88rem;
+        }
+        .instructions-sidebar li {
+            margin-bottom: 0.4rem;
+        }
+
         .footer-sponsor-bar {
             background-color: #3b4453;
             padding: 1.2rem 1rem;
@@ -139,7 +177,7 @@
         }
         .footer-sponsor-img:hover { transform: scale(1.04); }
 
-        <footer> text-align: center; padding: 1.5rem; color: var(--light-bg); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); </footer>
+        footer { text-align: center; padding: 1.5rem; color: var(--light-bg); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); }
         .footer-logo { height: 30px; width: auto; vertical-align: middle; margin-right: 0.5rem; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
@@ -248,7 +286,7 @@
 
         <!-- HOOPS MANAGER GAME TAB -->
         <section id="game" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <h2 style="color: var(--navy-text); font-size: 1.8rem;">College Basketball Manager Game</h2>
                     <p style="color: #555; margin-top: 0.3rem;">Build your program, manage the roster, and chase a championship.</p>
@@ -257,8 +295,40 @@
                     Open Fullscreen ↗
                 </a>
             </div>
-            <div style="position: relative; width: 100%; height: 780px; background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <iframe src="https://dulcet-babka-3c0e14.netlify.app/" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+
+            <div class="game-layout">
+                <!-- Left Sidebar Instructions -->
+                <aside class="instructions-sidebar">
+                    <h3>Step-by-Step Instructions</h3>
+
+                    <h4>Weekly Management Loop</h4>
+                    <ol>
+                        <li>Navigate to the Hoops Manager tab to begin your weekly management cycle.</li>
+                        <li>Answer the trivia questions first to kick off your week.</li>
+                        <li>Spend your six interactions strategically to recruit new prospects or train players.</li>
+                        <li>Click <strong>Simulate Game</strong> once you have used up all your interactions for the week.</li>
+                        <li>Select <strong>Advance to the Next Week</strong> to continue your season.</li>
+                    </ol>
+
+                    <h4>Player Development & Training</h4>
+                    <ol>
+                        <li>Switch to the <strong>Training Tab</strong> to oversee long-term athlete progression.</li>
+                        <li>Set your overall training focus to align with your team strategy.</li>
+                        <li>Allocate your interactions to execute focused player training and boost specific attributes.</li>
+                    </ol>
+
+                    <h4>Offseason Strategy</h4>
+                    <ol>
+                        <li>Progress through the schedule to reach the end-of-year offseason week.</li>
+                        <li>Use your six offseason interactions to convince key players to stay or encourage others to leave.</li>
+                        <li>Scout and acquire fresh talent directly from the <strong>Recruit</strong> or <strong>Transfer Station</strong>.</li>
+                    </ol>
+                </aside>
+
+                <!-- Right Side Game Frame -->
+                <div style="position: relative; width: 100%; height: 780px; background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <iframe src="https://dulcet-babka-3c0e14.netlify.app/" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+                </div>
             </div>
         </section>
 
