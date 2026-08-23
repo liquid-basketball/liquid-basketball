@@ -324,7 +324,7 @@
                 </aside>
 
                 <div style="position: relative; width: 100%; height: 780px; background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    <iframe src="https://dulcet-babka-3c0e14.netlify.app/" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+                    <iframe id="hoopsManagerFrame" data-src="https://dulcet-babka-3c0e14.netlify.app/" title="Liquid Basketball Hoops Manager" loading="lazy" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
                 </div>
             </div>
         </section>
@@ -398,6 +398,14 @@
         
         const activeBtn = Array.from(buttons).find(b => b.getAttribute('onclick').includes("'" + tabName + "'"));
         if (activeBtn) activeBtn.classList.add('active');
+
+        // Load the large Hoops Manager app only when the user opens its tab.
+        if (tabName === 'game') {
+            const gameFrame = document.getElementById('hoopsManagerFrame');
+            if (gameFrame && !gameFrame.src) {
+                gameFrame.src = gameFrame.dataset.src;
+            }
+        }
     }
 
     async function loadFrontPageCMS() {
