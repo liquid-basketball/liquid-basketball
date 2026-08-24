@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Basketball - Wichita, KS | Podcast, Writing & Hoops Culture</title>
+    <style>
+        :root {
+            --slate-grey: #4A5568;
+            --light-bg: #F0F4F8;
+            --text-main: #2D3748;
+            --orange-accent: #E25B28;
+            --navy-text: #1A365D;
+            --logo-blue: #1A428A;
+            --card-bg: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: var(--slate-grey); color: var(--text-main); line-height: 1.6; }
+
+        header {
+            background-color: var(--light-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--logo-blue);
+        }
+        .brand-logo-container { display: flex; align-items: center; gap: 0.8rem; }
+        
+        .logo-link {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .logo-link:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+        }
+
+        .brand-logo-container img { height: 50px; width: auto; display: block; }
+        .brand-title { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; color: var(--navy-text); }
+        .brand-title span { color: var(--orange-accent); font-style: italic; }
+
+        nav button {
+            background: none; border: none; color: var(--navy-text); padding: 0.5rem 1rem;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        nav button:hover, nav button.active { border-bottom: 3px solid var(--orange-accent); color: var(--orange-accent); }
+
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        .tab-content { display: none; background: var(--card-bg); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tab-content.active { display: block; }
+
+        .hero-banner {
+            text-align: center;
+            background-color: var(--light-bg);
+            color: var(--navy-text);
+            padding: 2.5rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--logo-blue);
+        }
+        .hero-logo-img { max-width: 320px; width: 100%; height: auto; margin-bottom: 1rem; }
+        .hero-banner p { color: var(--logo-blue); font-size: 1.1rem; font-weight: bold; }
+
+        .newspaper-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+        @media (max-width: 768px) { .newspaper-grid { grid-template-columns: 1fr; } }
+
+        .main-headline { border-bottom: 2px solid var(--logo-blue); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
+        .main-headline h2 { font-size: 2.1rem; color: var(--navy-text); margin-top: 0.4rem; }
+
+        .tag { background: var(--orange-accent); color: white; font-size: 0.75rem; padding: 0.2rem 0.5rem; text-transform: uppercase; font-weight: bold; border-radius: 3px; display: inline-block; }
+        .podcast-box { background: #e6eef5; border-left: 4px solid var(--logo-blue); padding: 1.5rem; border-radius: 6px; margin-top: 1.5rem; }
+        .sidebar-box { background: var(--light-bg); padding: 1.2rem; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 1.5rem; color: var(--navy-text); }
+        .sidebar-box.interview-plug { border-top: 4px solid var(--orange-accent); }
+
+        .game-feature {
+            background: linear-gradient(145deg, #071329, #0e2d60 55%, #071329);
+            border: 2px solid var(--logo-blue);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(12, 36, 75, 0.25);
+            margin-bottom: 2rem;
+        }
+        .game-feature-copy { padding: 1.25rem 1.25rem 0.5rem; color: white; }
+        .game-feature-copy h2 { font-size: clamp(1.55rem, 3vw, 2.15rem); line-height: 1.15; margin-top: 0.35rem; }
+        .game-feature-copy p { margin-top: 0.55rem; color: #dbeafe; }
+        .game-promo-link { display: block; background: #040b17; }
+        .game-promo-img { width: 100%; height: auto; display: block; aspect-ratio: 1 / 1; object-fit: cover; }
+        .game-feature-actions, .game-toolbar {
+            display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+        }
+        .game-feature-actions { padding: 1rem 1.25rem 1.25rem; }
+        .game-feature-actions .action-btn { flex: 1 1 190px; text-align: center; }
+        .secondary-btn { background: var(--orange-accent); }
+        .resource-btn { background: #2f855a; }
+        .video-btn { background: #6b46c1; }
+        .book-box { border-top: 4px solid var(--orange-accent); }
+        .book-box h2 { font-size: 1.35rem; color: var(--navy-text); margin-top: 0.35rem; line-height: 1.2; }
+        .podcast-box.sidebar-podcast { margin-top: 0; margin-bottom: 1.5rem; }
+        .game-frame-shell {
+            position: relative; width: 100%; height: min(82vh, 900px); min-height: 700px;
+            background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px;
+            overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .game-frame-shell iframe { width: 100%; height: 100%; border: 0; display: block; }
+        .game-frame-note { color: #64748b; font-size: 0.84rem; margin-top: 0.7rem; }
+        .contact-email-row { font-size: 1.2rem; margin-bottom: 1rem; color: var(--navy-text); }
+        .contact-link { overflow-wrap: anywhere; word-break: break-word; max-width: 100%; display: inline-block; }
+
+        .post-card { border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; margin-bottom: 1.5rem; position: relative; }
+        .post-card h3 { color: var(--navy-text); font-size: 1.5rem; }
+        .post-date { font-size: 0.85rem; color: #666; margin-bottom: 0.8rem; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem; border-radius: 6px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .contact-box { background: var(--light-bg); border: 2px solid var(--logo-blue); border-radius: 8px; padding: 2rem; text-align: center; }
+        .contact-link { color: var(--logo-blue); text-decoration: none; font-weight: bold; }
+        .contact-link:hover { color: var(--orange-accent); text-decoration: underline; }
+        .contact-handle { color: var(--orange-accent); font-weight: bold; margin-top: 0.5rem; display: block; font-size: 1.2rem; }
+        .phone-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 0.8rem; flex-wrap: wrap; }
+        .action-btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; color: white; text-decoration: none; font-weight: bold; }
+        .call-btn { background-color: var(--logo-blue); }
+        .text-btn { background-color: var(--orange-accent); }
+        .youtube-btn { background-color: #FF0000; }
+
+        footer { text-align: center; padding: 1.5rem; color: var(--light-bg); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-logo { height: 30px; width: auto; vertical-align: middle; margin-right: 0.5rem; }
+
+        @media (max-width: 900px) {
+            header { padding: 0.9rem 1rem; gap: 0.8rem; flex-wrap: wrap; }
+            nav { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem; }
+            nav button { padding: 0.55rem 0.35rem; font-size: 0.82rem; min-height: 44px; }
+            .container { margin: 1rem auto; }
+            .tab-content { padding: 1.25rem; }
+            .game-frame-shell { height: 78vh; min-height: 650px; }
+        }
+        @media (max-width: 768px) {
+            .newspaper-grid { grid-template-columns: 1fr; }
+            .sidebar-column { display: grid; grid-template-columns: 1fr; }
+            .hero-banner { padding: 1.5rem 0.75rem; margin-bottom: 1.25rem; }
+            .hero-logo-img { max-width: 260px; }
+            .contact-box { padding: 1.25rem 0.8rem; }
+            .contact-email-row { font-size: 1rem; }
+            .contact-link { font-size: 0.98rem; }
+            .game-toolbar { align-items: stretch; }
+            .game-toolbar .action-btn { flex: 1 1 180px; text-align: center; }
+        }
+        @media (max-width: 520px) {
+            .brand-title { font-size: 1.25rem; }
+            .brand-logo-container img { height: 42px; }
+            nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            nav button { font-size: 0.88rem; }
+            .tab-content { padding: 0.9rem; }
+            .game-feature-copy, .game-feature-actions { padding-left: 0.9rem; padding-right: 0.9rem; }
+            .game-frame-shell { height: 75vh; min-height: 600px; }
+            .contact-box p, .contact-email-row { font-size: 0.95rem !important; }
+        }
+    </style>
+    <link rel="preconnect" href="https://fake-ballers-basketball-league.onrender.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="brand-logo-container">
+            <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
+                <!-- Editable Header Logo -->
+                <img src="liquid-basketball-youtube-logo.png" id="cms-header-logo" class="cms-editable-img" alt="Liquid Basketball Wichita Logo">
+            </a>
+            <div class="brand-title">liquid <span>basketball</span></div>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="openTab(event, 'home')">Front Page</button>
+            <button class="nav-btn" onclick="openTab(event, 'news')">News & Media</button>
+            <button class="nav-btn" onclick="openTab(event, 'game')">Hoops Manager</button>
+            <button class="nav-btn" onclick="openTab(event, 'contact')">Contact & Info</button>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- FRONT PAGE -->
+        <section id="home" class="tab-content active">
+            <div class="hero-banner">
+                <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
+                    <!-- Editable Hero Logo -->
+                    <img src="liquid-basketball-youtube-logo.png" id="cms-hero-logo" alt="Liquid Basketball Wichita Cityscape Logo" class="hero-logo-img cms-editable-img">
+                </a>
+                <p class="cms-editable" id="cms-hero-sub">Wichita, KS | Stories, Insights, and Hoops Culture</p>
+            </div>
+            
+            <div class="newspaper-grid">
+                <main class="main-column" aria-label="Liquid Basketball featured content">
+                    <section class="game-feature" aria-labelledby="featured-game-title">
+                        <div class="game-feature-copy">
+                            <span class="tag">Featured Game</span>
+                            <h2 id="featured-game-title">Build Your Dynasty in Liquid Basketball</h2>
+                            <p>Recruit, train, manage your program, and compete in the FBBL Manager game.</p>
+                        </div>
+                        <a href="#game" class="game-promo-link" onclick="openTab(event, 'game')" aria-label="Open the Liquid Basketball Hoops Manager page">
+                            <picture>
+                                <source srcset="liquid-basketball-fbbl-manager.webp" type="image/webp">
+                                <img src="liquid-basketball-fbbl-manager.png" class="game-promo-img" alt="Liquid Basketball Build Your Dynasty FBBL Manager game graphic" width="1254" height="1254" fetchpriority="high" decoding="async">
+                            </picture>
+                        </a>
+                        <div class="game-feature-actions">
+                            <a href="#game" onclick="openTab(event, 'game')" class="action-btn call-btn">Play Hoops Manager</a>
+                            <a href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer" class="action-btn secondary-btn">Open Game Fullscreen ↗</a>
+                        </div>
+                    </section>
+
+                    <!-- FRONT PAGE POSTS CONTAINER: CMS behavior preserved -->
+                    <div id="homePostsContainer" style="margin-bottom: 2rem;"></div>
+                </main>
+
+                <aside class="sidebar-column" aria-label="Liquid Basketball projects">
+                    <article class="sidebar-box book-box">
+                        <span class="tag cms-editable" id="cms-tag-1">Work In Progress</span>
+                        <h2 class="cms-editable" id="cms-headline-title">Bumpy Roads - Growing up Basketball Obsessed in Kansas</h2>
+                        <p class="cms-editable" id="cms-headline-body" style="margin-top:0.8rem; font-size: 0.96rem; color: #444;">
+                            Currently in development, <em>Bumpy Roads</em> is an upcoming book project exploring the nostalgia, obsession, and deep-rooted culture of basketball in the heartland.
+                        </p>
+                        <p class="cms-editable" id="cms-headline-footer" style="margin-top: 0.8rem; font-style: italic; color: var(--logo-blue); font-weight: 600; font-size:0.9rem;">
+                            ✍️ Manuscript writing is in progress with a potential future release.
+                        </p>
+                    </article>
+
+                    <div class="podcast-box sidebar-podcast">
+                        <span class="tag cms-editable" id="cms-tag-2" style="background: var(--logo-blue);">Now Building</span>
+                        <h3 class="cms-editable" id="cms-podcast-title" style="color: var(--navy-text); font-size: 1.35rem; margin-top: 0.4rem;">The Liquid Basketball Podcast</h3>
+                        <p class="cms-editable" id="cms-podcast-desc" style="margin-top: 0.5rem; font-size:0.92rem;">An upcoming podcast series diving into player stories, regional basketball history, and coaching insights.</p>
+                        <div style="margin-top: 1rem; background: #fff; padding: 0.8rem; border-radius: 6px; border: 1px solid #ccc;">
+                            <p class="cms-editable" id="cms-audio-teaser" style="font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 0.3rem;">🎙️ AUDIO TEASER (COMING SOON)</p>
+                            <audio controls preload="none" id="cms-audio-player" style="width: 100%;">
+                                <source src="#" id="cms-audio-src" class="cms-editable-audio" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-box">
+                        <h3 class="cms-editable" id="cms-notes-title" style="color: var(--navy-text);">Project Notes</h3>
+                        <hr style="margin: 0.5rem 0 0.8rem 0; border-color: #d0dbe6;">
+                        <p class="cms-editable" id="cms-note-1" style="font-size: 0.95rem;"><strong>• Book Status:</strong> Drafting in progress.</p>
+                        <p class="cms-editable" id="cms-note-2" style="font-size: 0.95rem; margin-top:0.6rem;"><strong>• Podcast Status:</strong> Concepting & initial recording underway.</p>
+                    </div>
+
+                    <div class="sidebar-box interview-plug">
+                        <h4 class="cms-editable" id="cms-plug-title" style="color: var(--navy-text);">Have a Story or Guest Idea?</h4>
+                        <p class="cms-editable" id="cms-plug-desc" style="font-size: 0.88rem; color: #555; margin-top: 0.3rem;">
+                            Know a coach, player, or heartland basketball legend who should be featured on the podcast?
+                        </p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <a href="#contact" onclick="openTab(event, 'contact')" style="color: var(--orange-accent); font-weight: bold; text-decoration: none;">Send interview suggestions →</a>
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- NEWS & MEDIA -->
+        <section id="news" class="tab-content">
+            <h2 class="cms-editable" id="cms-news-header">Liquid Basketball Media</h2>
+            <p class="cms-editable" id="cms-news-sub" style="margin-bottom: 1rem;">Latest updates, project progress, podcast news, photos, and media drops.</p>
+
+            <div id="postsContainer"></div>
+        </section>
+
+        <!-- HOOPS MANAGER GAME TAB -->
+        <section id="game" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="color: var(--navy-text); font-size: 1.8rem;">Liquid Basketball FBBL Manager</h2>
+                    <p style="color: #555; margin-top: 0.3rem;">Build your program, manage the roster, and chase a championship.</p>
+                </div>
+                <div class="game-toolbar">
+                    <a href="Liquid_Basketball_Game_Instructions.pdf" target="_blank" rel="noopener noreferrer" class="action-btn resource-btn">📘 Game Instructions</a>
+                    <a href="Liquid_Basketball_How_to_Play_Short.mp4" target="_blank" rel="noopener noreferrer" class="action-btn video-btn">▶ How-to Video</a>
+                    <a href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer" class="action-btn call-btn">Open Fullscreen ↗</a>
+                </div>
+            </div>
+            <div class="game-frame-shell">
+                <iframe id="hoops-manager-frame"
+                        title="Liquid Basketball FBBL Manager"
+                        data-src="https://fake-ballers-basketball-league.onrender.com/"
+                        loading="lazy"
+                        allow="fullscreen"
+                        allowfullscreen></iframe>
+            </div>
+            <p class="game-frame-note">The game loads inside this page when you open Hoops Manager. If your browser blocks an embedded login or game feature, use Open Fullscreen.</p>
+        </section>
+
+        <!-- CONTACT PAGE -->
+        <section id="contact" class="tab-content">
+            <h2>Contact & Information</h2>
+            <p style="margin-bottom: 1.5rem;">Reach out regarding interview suggestions, podcast guest ideas, book progress, or media inquiries.</p>
+            <div class="contact-box">
+                <h3 style="color: var(--navy-text); font-size: 1.5rem; margin-bottom: 1rem;">Get in Touch:</h3>
+                
+                <p style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--navy-text);"><strong>Phone / Text:</strong> <span class="cms-editable" id="cms-phone">785 503 8201</span></p>
+                <div class="phone-buttons">
+                    <a href="tel:7855038201" class="action-btn call-btn">📞 Call Now</a>
+                    <a href="sms:7855038201" class="action-btn text-btn">💬 Text Now</a>
+                </div>
+                
+                <br><hr style="border-color: #d0dbe6;"><br>
+                
+                <div class="contact-email-row">
+                    <strong>Email:</strong>
+                    <a href="mailto:john@liquidbasketball.com" class="contact-link cms-editable" id="cms-email">john@liquidbasketball.com</a>
+                </div>
+
+                <div style="font-size: 1.2rem; color: var(--navy-text);">
+                    <strong>YouTube Channel:</strong>
+                    <span class="contact-handle cms-editable" id="cms-yt-handle">@LiquidBasketballKS</span>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="action-btn youtube-btn">
+                            ▶️ Watch Our Videos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>
+            <a href="https://www.youtube.com/@LiquidBasketballKS" target="_blank" rel="noopener noreferrer" class="logo-link" title="Visit Liquid Basketball on YouTube">
+                <!-- Editable Small Footer Logo -->
+                <img src="liquid-basketball-youtube-logo.png" id="cms-footer-logo" alt="" class="footer-logo cms-editable-img">
+            </a>
+            &copy; 2026 Liquid Basketball — Wichita, KS | Hoops, Media & Projects
+        </p>
+    </footer>
+
+    <script>
+    function loadGameFrame() {
+        const frame = document.getElementById('hoops-manager-frame');
+        if (frame && !frame.src && frame.dataset.src) frame.src = frame.dataset.src;
+    }
+
+    function openTab(evt, tabName) {
+        const contents = document.querySelectorAll('.tab-content');
+        const buttons = document.querySelectorAll('.nav-btn');
+        const target = document.getElementById(tabName);
+        if (!target) return;
+
+        contents.forEach(c => c.classList.remove('active'));
+        buttons.forEach(b => b.classList.remove('active'));
+        target.classList.add('active');
+
+        const activeBtn = Array.from(buttons).find(b => (b.getAttribute('onclick') || '').includes("'" + tabName + "'"));
+        if (activeBtn) activeBtn.classList.add('active');
+        if (tabName === 'game') loadGameFrame();
+    }
+
+    async function loadFrontPageCMS() {
+        try {
+            const res = await fetch('/api/cms');
+            if (!res.ok) return;
+            const pageData = await res.json();
+            
+            for (const id in pageData) {
+                const el = document.getElementById(id);
+                if (el) {
+                    const tag = el.tagName.toLowerCase();
+                    
+                    if (tag === 'img') {
+                        el.src = pageData[id];
+                    } else if (tag === 'source') {
+                        el.src = pageData[id];
+                        if(el.parentElement && el.parentElement.tagName.toLowerCase() === 'audio') {
+                            el.parentElement.load(); 
+                        }
+                    } else {
+                        el.innerHTML = pageData[id];
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Error loading CMS data:', err);
+        }
+    }
+
+    async function renderPosts() {
+        const newsContainer = document.getElementById('postsContainer');
+        const homeContainer = document.getElementById('homePostsContainer');
+
+        try {
+            const res = await fetch('/api/posts');
+            if (!res.ok) throw new Error('Posts request failed: ' + res.status);
+            const posts = await res.json();
+
+            if (newsContainer) newsContainer.innerHTML = '';
+            if (homeContainer) homeContainer.innerHTML = '';
+
+            if (!Array.isArray(posts) || posts.length === 0) {
+                if (newsContainer) newsContainer.innerHTML = '<p>No posts published yet.</p>';
+                return;
+            }
+
+            posts.forEach(post => {
+                const article = document.createElement('article');
+                article.className = 'post-card';
+                let embedUrl = getEmbedUrl(post.video_url || post.videoUrl);
+
+                let formattedContent = parseLinks(post.content);
+
+                let articleHTML = `
+                    <h3>${escapeHTML(post.title)}</h3>
+                    <div class="post-date">Published on ${post.date}</div>
+                    <div>${formattedContent}</div>
+                `;
+
+                const img = post.image_url || post.imageUrl;
+                if (img) {
+                    articleHTML += `<div style="margin-top:1rem;"><img src="${escapeHTML(img)}" loading="lazy" decoding="async" style="max-width:100%; border-radius:6px;"></div>`;
+                }
+
+                if (embedUrl) {
+                    articleHTML += `<div class="video-wrapper"><iframe src="${embedUrl}" loading="lazy" title="Liquid Basketball media video" allowfullscreen></iframe></div>`;
+                }
+
+                article.innerHTML = articleHTML;
+
+                const target = post.target_page || post.targetPage || 'both';
+
+                if ((target === 'news' || target === 'both') && newsContainer) {
+                    newsContainer.appendChild(article.cloneNode(true));
+                }
+                if ((target === 'home' || target === 'both') && homeContainer) {
+                    homeContainer.appendChild(article.cloneNode(true));
+                }
+            });
+        } catch (err) {
+            if (newsContainer) newsContainer.innerHTML = '<p>Error loading posts from server.</p>';
+        }
+    }
+
+    function parseLinks(text) {
+        if (!text) return '';
+        const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>').replace(/\n/g, '<br>');
+    }
+
+    function getEmbedUrl(url) {
+        if (!url) return null;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = String(url).match(regExp);
+        return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : null;
+    }
+
+    function escapeHTML(str) {
+        return str == null ? '' : String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadFrontPageCMS();
+        renderPosts();
+        const initialTab = window.location.hash.replace('#', '');
+        if (['home', 'news', 'game', 'contact'].includes(initialTab)) openTab(null, initialTab);
+    });
+    </script> 
+</body>
+</html>
