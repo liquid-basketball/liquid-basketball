@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>Liquid Sports CMS Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#07111f;--panel:#0d1c30;--blue:#1778ff;--orange:#f4510b;--text:#eef6ff;--muted:#9fb1c8;--line:rgba(99,166,255,.22)}*{box-sizing:border-box}body{margin:0;font-family:Montserrat,system-ui,sans-serif;background:#07111f;color:var(--text)}a{color:#79baff}.wrap{width:min(1180px,94vw);margin:28px auto 60px}.head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.head h1{margin:0}.panel{background:linear-gradient(145deg,#10243d,#091727);border:1px solid var(--line);border-radius:16px;padding:20px;margin:15px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.full{grid-column:1/-1}label{display:block;font-size:.72rem;font-weight:900;color:#b8cee8;margin-bottom:6px}input,textarea,select{width:100%;border:1px solid rgba(99,166,255,.3);border-radius:9px;padding:11px;background:#06111f;color:#fff}textarea{min-height:150px;resize:vertical}.button{border:0;border-radius:9px;padding:11px 15px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,var(--orange),#ff7d19);color:#fff}.button.secondary{background:#12325a}.button.danger{background:#711f25}.notice{font-size:.78rem;color:var(--muted);line-height:1.55}.status{padding:10px 12px;border-radius:9px;background:#06111f;color:#b9d5f4;font-size:.78rem;min-height:38px}.list{display:grid;gap:10px}.item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:12px;background:#081626}.item h4{margin:0 0 4px}.item small{color:var(--muted)}.hidden{display:none}@media(max-width:700px){.grid{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}.item{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><div><div style="color:#49a6ff;font-weight:900;letter-spacing:.14em;font-size:.72rem">LIQUID SPORTS</div><h1>CMS Admin</h1></div><a href="/">← Back to site</a></div>
+
+  <section class="panel" id="loginPanel">
+    <h2>Admin Sign-In</h2>
+    <p class="notice">Enter the ADMIN_PASSWORD configured on the website server. The password is kept only in this browser session.</p>
+    <div class="grid"><div><label for="adminKey">Admin Password</label><input id="adminKey" type="password" autocomplete="current-password"></div><div style="display:flex;align-items:end"><button class="button" id="loginBtn">Open CMS</button></div></div>
+    <div id="loginStatus" class="status" style="margin-top:12px">Not signed in.</div>
+  </section>
+
+  <div id="cmsArea" class="hidden">
+    <section class="panel">
+      <h2>Publish a Post</h2>
+      <p class="notice">Paste text, choose where it appears, choose a content category, upload a photo when needed, and paste a YouTube or Vimeo link for video posts.</p>
+      <form id="postForm" class="grid">
+        <div><label>Title</label><input name="title" required maxlength="180"></div>
+        <div><label>Category</label><select name="category"><option>Basketball</option><option>Football</option><option>News</option><option>Photo Story</option><option>Video</option><option>Podcast</option><option>Community</option><option>Feature</option></select></div>
+        <div><label>Content Type</label><select name="content_type"><option value="news">News / Story</option><option value="photo">Photo Story</option><option value="video">Video</option></select></div>
+        <div><label>Publish To</label><select name="target_page"><option value="both">Front Page + News & Media</option><option value="home">Front Page only</option><option value="news">News & Media only</option></select></div>
+        <div class="full"><label>Story / Post Text</label><textarea name="content" placeholder="Paste your story or update here..."></textarea></div>
+        <div><label>Photo Upload (JPG/PNG/WebP)</label><input name="image" type="file" accept="image/jpeg,image/png,image/webp"></div>
+        <div><label>Photo Alt Text</label><input name="image_alt" placeholder="Short description of the image"></div>
+        <div class="full"><label>Video Link (YouTube or Vimeo)</label><input name="video_url" type="url" placeholder="https://www.youtube.com/watch?v=..."></div>
+        <div class="full"><button class="button" type="submit">Publish Post</button></div>
+      </form>
+      <div id="postStatus" class="status" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Ad Manager</h2>
+      <p class="notice">Upload JPG, PNG, WebP, or PDF. Side-rail and bottom-rail containers have fixed responsive dimensions so unusually shaped ads cannot distort the site layout.</p>
+      <form id="adForm" class="grid">
+        <div><label>Ad / Sponsor Title</label><input name="title" required maxlength="140"></div>
+        <div><label>Placement</label><select name="placement"><option value="side">Side Rail</option><option value="bottom">Bottom Rail</option></select></div>
+        <div><label>Asset Upload</label><input name="asset" required type="file" accept="image/jpeg,image/png,image/webp,application/pdf"></div>
+        <div><label>Click-Through Link (optional)</label><input name="link_url" type="url" placeholder="https://..."></div>
+        <div class="full"><label>Alt Text</label><input name="alt_text" placeholder="Sponsor or ad description"></div>
+        <div class="full"><button class="button" type="submit">Add Ad</button></div>
+      </form>
+      <div id="adStatus" class="status" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Site Text Settings</h2>
+      <form id="settingsForm" class="grid">
+        <div class="full"><label>Front Page Subtitle</label><textarea name="cms-hero-sub" style="min-height:90px"></textarea></div>
+        <div class="full"><label>News & Media Subtitle</label><textarea name="cms-news-sub" style="min-height:90px"></textarea></div>
+        <div class="full"><label>YouTube Channel URL</label><input name="cms-youtube-url" type="url"></div>
+        <div class="full"><button class="button" type="submit">Save Site Settings</button></div>
+      </form>
+      <div id="settingsStatus" class="status" style="margin-top:12px"></div>
+    </section>
+
+    <section class="panel"><h2>Published Posts</h2><div id="postList" class="list"></div></section>
+    <section class="panel"><h2>Active Ads</h2><div id="adList" class="list"></div></section>
+  </div>
+</div>
+<script>
+'use strict';
+let adminKey='';
+const $=id=>document.getElementById(id);
+function headers(json=false){const h={'x-admin-key':adminKey};if(json)h['content-type']='application/json';return h}
+function esc(v=''){return String(v).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+async function login(){adminKey=$('adminKey').value.trim();$('loginStatus').textContent='Checking...';const r=await fetch('/api/admin/auth',{method:'POST',headers:headers(true),body:'{}'});if(!r.ok){$('loginStatus').textContent='Sign-in failed.';adminKey='';return}$('loginStatus').textContent='CMS unlocked.';$('cmsArea').classList.remove('hidden');sessionStorage.setItem('liquidAdminKey',adminKey);await Promise.all([loadLists(),loadSettings()])}
+async function formPost(e,url,statusId){e.preventDefault();const fd=new FormData(e.currentTarget);const s=$(statusId);s.textContent='Uploading...';const r=await fetch(url,{method:'POST',headers:headers(false),body:fd});const data=await r.json().catch(()=>({}));s.textContent=r.ok?'Saved successfully.':(data.error||'Save failed.');if(r.ok){e.currentTarget.reset();await loadLists()}}
+async function loadSettings(){const r=await fetch('/api/cms');if(!r.ok)return;const d=await r.json();for(const [k,v] of Object.entries(d)){const f=document.querySelector(`[name="${CSS.escape(k)}"]`);if(f)f.value=v||''}}
+async function saveSettings(e){e.preventDefault();const obj=Object.fromEntries(new FormData(e.currentTarget).entries());$('settingsStatus').textContent='Saving...';const r=await fetch('/api/admin/cms',{method:'POST',headers:headers(true),body:JSON.stringify(obj)});$('settingsStatus').textContent=r.ok?'Settings saved.':'Save failed.'}
+async function loadLists(){const [pr,ar]=await Promise.all([fetch('/api/admin/posts',{headers:headers()}),fetch('/api/admin/ads',{headers:headers()})]);if(pr.ok){const posts=await pr.json();$('postList').innerHTML=posts.length?posts.map(p=>`<div class="item"><div><h4>${esc(p.title)}</h4><small>${esc(p.category||'')} • ${esc(p.content_type||'news')} • ${esc(p.target_page||'both')}</small></div><button class="button danger" onclick="delItem('posts','${p.id}')">Delete</button></div>`).join(''):'<div class="status">No posts yet.</div>'}if(ar.ok){const ads=await ar.json();$('adList').innerHTML=ads.length?ads.map(a=>`<div class="item"><div><h4>${esc(a.title)}</h4><small>${esc(a.placement)} • ${esc(a.asset_type||'asset')}</small></div><button class="button danger" onclick="delItem('ads','${a.id}')">Delete</button></div>`).join(''):'<div class="status">No ads yet.</div>'}}
+async function delItem(kind,id){if(!confirm('Delete this item?'))return;const r=await fetch(`/api/admin/${kind}/${encodeURIComponent(id)}`,{method:'DELETE',headers:headers()});if(!r.ok)alert('Delete failed.');await loadLists()}
+$('loginBtn').addEventListener('click',login);$('postForm').addEventListener('submit',e=>formPost(e,'/api/admin/posts','postStatus'));$('adForm').addEventListener('submit',e=>formPost(e,'/api/admin/ads','adStatus'));$('settingsForm').addEventListener('submit',saveSettings);
+window.addEventListener('DOMContentLoaded',()=>{const k=sessionStorage.getItem('liquidAdminKey');if(k){$('adminKey').value=k;login()}});
+</script>
+</body>
+</html>
