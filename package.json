@@ -1,20 +1,23 @@
 {
   "name": "liquid-sports-website",
-  "version": "2.0.0",
+  "version": "3.1.0",
   "private": true,
-  "description": "Liquid Basketball + Liquid Football media and management-game website with CMS and ad manager.",
+  "description": "Liquid Sports launch website with CMS, 5 MB image cap, YouTube video links, ad manager, FBBL/FBFL/FBDL pages and media guides.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check public/site.js"
+    "check": "node --check server.js && node --check public/site.js && node --check public/admin.js"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": "22.22.0"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "compression": "^1.8.1",
     "dotenv": "^17.2.2",
     "express": "^4.21.2",
     "helmet": "^8.1.0",
+    "image-size": "^2.0.2",
     "multer": "^2.0.2"
   }
 }

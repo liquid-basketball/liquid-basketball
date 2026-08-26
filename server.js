@@ -1,208 +1,188 @@
 'use strict';
-require('dotenv').config();
-const path = require('path');
-const crypto = require('crypto');
 const express = require('express');
-const multer = require('multer');
 const compression = require('compression');
 const helmet = require('helmet');
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const { imageSize } = require('image-size');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
-const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'site-media';
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+const supabase = SUPABASE_URL && SERVICE_KEY ? createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
 
-if (!ADMIN_PASSWORD) console.warn('WARNING: ADMIN_PASSWORD is not set. Admin mutations will be disabled.');
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) console.warn('WARNING: Supabase server credentials are missing. CMS API will be unavailable until configured.');
-
-const supabase = (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY)
-  ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } })
-  : null;
-
-app.disable('x-powered-by');
+app.set('trust proxy', 1);
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(compression());
-app.use(helmet({
-  crossOriginEmbedderPolicy: false,
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
-      imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
-      mediaSrc: ["'self'", 'https:'],
-      connectSrc: ["'self'"],
-      frameSrc: ["'self'", 'https://www.youtube.com', 'https://player.vimeo.com', 'https://fake-ballers-basketball-league.onrender.com', 'https://fake-ballers-football-league.onrender.com'],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"],
-      formAction: ["'self'"]
-    }
-  }
-}));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
-app.use(express.static(PUBLIC_DIR, { maxAge: '1h', etag: true }));
+app.use(express.static(PUBLIC_DIR, { maxAge: process.env.NODE_ENV === 'production' ? '6h' : 0, etag: true }));
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 12 * 1024 * 1024 }
-});
+const IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const PDF_MAX_BYTES = 12 * 1024 * 1024;
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: PDF_MAX_BYTES, files: 2 } });
+const postUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'attachment', maxCount: 1 }]);
+const adUpload = upload.single('asset');
 
-function safeEqual(a, b) {
-  const aa = Buffer.from(String(a || ''));
-  const bb = Buffer.from(String(b || ''));
-  return aa.length === bb.length && crypto.timingSafeEqual(aa, bb);
-}
-function requireAdmin(req, res, next) {
-  if (!ADMIN_PASSWORD) return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured.' });
-  if (!safeEqual(req.get('x-admin-key'), ADMIN_PASSWORD)) return res.status(401).json({ error: 'Unauthorized' });
-  next();
-}
-function requireDb(res) {
-  if (!supabase) { res.status(503).json({ error: 'Supabase is not configured.' }); return false; }
-  return true;
-}
-function cleanBaseName(name='file') {
-  return String(name).normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/-+/g,'-').replace(/^[-.]+|[-.]+$/g,'').slice(-100) || 'file';
-}
+function requireDb(res) { if (!supabase) { res.status(503).json({ error: 'CMS database is not configured on this server.' }); return false; } return true; }
+function secureEqual(a, b) { const aa = Buffer.from(String(a || '')); const bb = Buffer.from(String(b || '')); return aa.length === bb.length && crypto.timingSafeEqual(aa, bb); }
+function requireAdmin(req, res, next) { if (!ADMIN_PASSWORD) return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured in Render.' }); const supplied = req.get('x-admin-password') || req.body?.admin_password || ''; if (!secureEqual(supplied, ADMIN_PASSWORD)) return res.status(401).json({ error: 'Incorrect admin password.' }); next(); }
+function cleanBaseName(name='file') { return String(name).normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/-+/g, '-').slice(-120) || 'file'; }
+function isImage(file) { return !!file && ['image/jpeg','image/png','image/webp'].includes(file.mimetype); }
+function isPdf(file) { return !!file && file.mimetype === 'application/pdf'; }
+function validateImageSize(file) { if(file && file.size > IMAGE_MAX_BYTES) throw new Error('Image is too large. Maximum image size is 5 MB.'); }
+function validatePdfSize(file) { if(file && file.size > PDF_MAX_BYTES) throw new Error('PDF is too large. Maximum PDF size is 12 MB.'); }
+function isYouTubeUrl(v) { const raw=String(v||'').trim(); if(!raw) return true; try { const u=new URL(raw); const h=u.hostname.toLowerCase().replace(/^www\./,''); return h==='youtube.com'||h==='m.youtube.com'||h==='youtu.be'; } catch { return false; } }
+function bool(v, fallback=false) { if (v === undefined || v === null) return fallback; return ['true','1','yes','on'].includes(String(v).toLowerCase()); }
+function clampText(v, n) { return String(v ?? '').trim().slice(0, n); }
+function sanitizeSport(v) { return ['football','basketball','baseball','all'].includes(v) ? v : 'all'; }
+function sanitizeType(v) { return ['news','photo','video','media'].includes(v) ? v : 'news'; }
+function sanitizePlacement(v) { return ['side','bottom'].includes(v) ? v : 'side'; }
+function sanitizeSide(v) { return ['left','right','auto'].includes(v) ? v : 'auto'; }
+function safeHttpUrl(v, allowRelative=false) { const raw=String(v||'').trim(); if(!raw) return ''; if(allowRelative && raw.startsWith('/')) return raw.slice(0,1200); try { const u=new URL(raw); return ['http:','https:'].includes(u.protocol) ? u.href.slice(0,1200) : ''; } catch { return ''; } }
+function isoDate(v) { if(!v) return new Date().toISOString(); const d=new Date(v); return Number.isNaN(d.valueOf()) ? new Date().toISOString() : d.toISOString(); }
+
 async function ensureBucket() {
-  if (!supabase) return;
-  const { data } = await supabase.storage.getBucket(BUCKET);
-  if (!data) {
-    const { error } = await supabase.storage.createBucket(BUCKET, { public: true, fileSizeLimit: 12 * 1024 * 1024 });
-    if (error && !/already exists/i.test(error.message)) console.error('Storage bucket:', error.message);
+  if(!supabase) return;
+  const { data, error } = await supabase.storage.listBuckets();
+  if(error) throw error;
+  if(!(data||[]).some(b=>b.name===BUCKET)) {
+    const { error:createError } = await supabase.storage.createBucket(BUCKET,{ public:true, fileSizeLimit:12*1024*1024, allowedMimeTypes:['image/jpeg','image/png','image/webp','application/pdf'] });
+    if(createError && !/already exists/i.test(createError.message)) throw createError;
   }
 }
 async function storeFile(file, folder) {
-  if (!file) return null;
+  if(!file) return '';
   const key = `${folder}/${Date.now()}-${crypto.randomUUID()}-${cleanBaseName(file.originalname)}`;
-  const { error } = await supabase.storage.from(BUCKET).upload(key, file.buffer, { contentType: file.mimetype, upsert: false, cacheControl: '3600' });
-  if (error) throw error;
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(key);
-  return data.publicUrl;
+  const { error } = await supabase.storage.from(BUCKET).upload(key,file.buffer,{ contentType:file.mimetype,upsert:false,cacheControl:'3600' });
+  if(error) throw error;
+  return supabase.storage.from(BUCKET).getPublicUrl(key).data.publicUrl;
 }
-function isImage(file) { return !!file && ['image/jpeg','image/png','image/webp'].includes(file.mimetype); }
-function isAdAsset(file) { return !!file && (isImage(file) || file.mimetype === 'application/pdf'); }
-function sanitizeTarget(v) { return ['home','news','both'].includes(v) ? v : 'both'; }
-function sanitizeType(v) { return ['news','photo','video'].includes(v) ? v : 'news'; }
-function sanitizePlacement(v) { return ['side','bottom'].includes(v) ? v : 'side'; }
+function getImageDimensions(file) { try { const d=imageSize(file.buffer); return { width:Number(d.width||0),height:Number(d.height||0),ratio:(d.width&&d.height)?d.width/d.height:0 }; } catch { return { width:0,height:0,ratio:0 }; } }
+function validateAdCreative(file, placement) {
+  if(!file) throw new Error('Choose an ad creative first.');
+  if(isPdf(file)) { validatePdfSize(file); return { width:null,height:null,ratio:null }; }
+  validateImageSize(file);
+  if(!isImage(file)) throw new Error('Ad creative must be JPG, PNG, WebP, or PDF.');
+  const d=getImageDimensions(file);
+  if(!d.width||!d.height) throw new Error('The image dimensions could not be read.');
+  if(placement==='side') {
+    if(d.width<120||d.width>900||d.height<300||d.height>2400||d.ratio<0.15||d.ratio>0.50) throw new Error(`Side rail creative is ${d.width}×${d.height}. Use a narrow ad: 120-900 px wide, 300-2400 px tall, aspect ratio 0.15-0.50 (160×600 or a higher-resolution equivalent works well).`);
+  } else {
+    if(d.width<480||d.width>3000||d.height<60||d.height>800||d.ratio<3.5||d.ratio>14) throw new Error(`Bottom creative is ${d.width}×${d.height}. Use a banner: 480-3000 px wide, 60-800 px tall, aspect ratio 3.5-14.0 (728×90 or 970×90 works well).`);
+  }
+  return d;
+}
+function validateExistingAdDimensions(row, placement) {
+  if((row.asset_type||'').includes('pdf') || !row.width_px || !row.height_px) return;
+  const fake={ width:Number(row.width_px), height:Number(row.height_px), ratio:Number(row.width_px)/Number(row.height_px) };
+  if(placement==='side' && (fake.ratio<0.15||fake.ratio>0.50)) throw new Error('That existing creative is not narrow enough for a side rail. Upload a new side-rail creative.');
+  if(placement==='bottom' && (fake.ratio<3.5||fake.ratio>14)) throw new Error('That existing creative is not a banner shape. Upload a new bottom-banner creative.');
+}
 
-app.get('/api/health', (_req,res)=>res.json({ok:true}));
-app.post('/api/admin/auth', requireAdmin, (_req,res)=>res.json({ok:true}));
+app.get(['/admin','/admin/'], (_req,res)=>res.sendFile(path.join(PUBLIC_DIR,'admin.html')));
+app.get('/api/health',(_req,res)=>res.json({ok:true,brand:'Liquid Sports'}));
+app.post('/api/admin/auth',requireAdmin,(_req,res)=>res.json({ok:true}));
 
-app.get('/api/cms', async (_req,res) => {
-  if (!requireDb(res)) return;
-  const { data, error } = await supabase.from('site_cms').select('key,value');
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(Object.fromEntries((data || []).map(r => [r.key, r.value])));
+app.get('/api/cms',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_cms').select('key,value'); if(error)return res.status(500).json({error:error.message}); res.json(Object.fromEntries((data||[]).map(r=>[r.key,r.value]))); });
+app.get('/api/posts',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_posts').select('*').eq('published',true).order('published_at',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+app.get('/api/ads',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_ads').select('*').eq('active',true).order('created_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+app.get('/api/admin/posts',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_posts').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+app.get('/api/admin/ads',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_ads').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+
+app.post('/api/admin/cms',requireAdmin,async(req,res)=>{ if(!requireDb(res))return; const allowed=['cms-hero-sub']; const rows=allowed.filter(k=>Object.prototype.hasOwnProperty.call(req.body,k)).map(k=>({key:k,value:clampText(req.body[k],4000),updated_at:new Date().toISOString()})); if(!rows.length)return res.json({ok:true}); const {error}=await supabase.from('site_cms').upsert(rows,{onConflict:'key'}); if(error)return res.status(500).json({error:error.message}); res.json({ok:true}); });
+
+function buildPostRow(body, existing={}) {
+  const has=k=>Object.prototype.hasOwnProperty.call(body,k);
+  const row={ updated_at:new Date().toISOString() };
+  if(has('title')) row.title=clampText(body.title,180);
+  if(has('excerpt')) row.excerpt=clampText(body.excerpt,600);
+  if(has('content')) row.content=String(body.content??'').slice(0,30000);
+  if(has('category')) row.category=clampText(body.category,80)||'News';
+  if(has('content_type')) row.content_type=sanitizeType(body.content_type);
+  if(has('sport')) row.sport=sanitizeSport(body.sport);
+  if(has('featured')) row.featured=bool(body.featured);
+  if(has('published')) row.published=bool(body.published);
+  if(has('published_at')) row.published_at=isoDate(body.published_at);
+  if(has('image_alt')) row.image_alt=clampText(body.image_alt,300);
+  if(has('video_url')) row.video_url=safeHttpUrl(body.video_url);
+  if(has('file_url')) row.file_url=safeHttpUrl(body.file_url,true);
+  if(has('external_url')) row.external_url=safeHttpUrl(body.external_url);
+  row.target_page='both';
+  return row;
+}
+
+app.post('/api/admin/posts',requireAdmin,postUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    const image=req.files?.image?.[0], attachment=req.files?.attachment?.[0];
+    if(image&&!isImage(image)) return res.status(400).json({error:'Featured image must be JPG, PNG, or WebP.'});
+    if(attachment&&!isPdf(attachment)) return res.status(400).json({error:'Attachment must be a PDF.'});
+    validateImageSize(image); validatePdfSize(attachment);
+    if(req.body.video_url && !isYouTubeUrl(req.body.video_url)) return res.status(400).json({error:'Video link must be a YouTube URL.'});
+    const row=buildPostRow(req.body);
+    if(!row.title) return res.status(400).json({error:'Title is required.'});
+    row.excerpt=row.excerpt||''; row.content=row.content||''; row.category=row.category||'News'; row.content_type=row.content_type||'news'; row.sport=row.sport||'all'; row.featured=Object.prototype.hasOwnProperty.call(row,'featured')?row.featured:false; row.published=Object.prototype.hasOwnProperty.call(row,'published')?row.published:true; row.published_at=row.published_at||new Date().toISOString();
+    if(image) row.image_url=await storeFile(image,'posts');
+    if(attachment) row.file_url=await storeFile(attachment,'posts');
+    const {data,error}=await supabase.from('site_posts').insert(row).select().single(); if(error)throw error; res.status(201).json(data);
+  }catch(err){res.status(500).json({error:err.message||'Content upload failed.'});}
 });
 
-app.get('/api/posts', async (_req,res) => {
-  if (!requireDb(res)) return;
-  const { data, error } = await supabase.from('site_posts').select('*').eq('published',true).order('created_at',{ascending:false});
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data || []);
+app.put('/api/admin/posts/:id',requireAdmin,postUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    const {data:existing,error:readErr}=await supabase.from('site_posts').select('*').eq('id',req.params.id).single(); if(readErr)throw readErr;
+    const image=req.files?.image?.[0], attachment=req.files?.attachment?.[0];
+    if(image&&!isImage(image)) return res.status(400).json({error:'Featured image must be JPG, PNG, or WebP.'});
+    if(attachment&&!isPdf(attachment)) return res.status(400).json({error:'Attachment must be a PDF.'});
+    validateImageSize(image); validatePdfSize(attachment);
+    if(req.body.video_url && !isYouTubeUrl(req.body.video_url)) return res.status(400).json({error:'Video link must be a YouTube URL.'});
+    const row=buildPostRow(req.body,existing);
+    if(image) row.image_url=await storeFile(image,'posts');
+    if(attachment) row.file_url=await storeFile(attachment,'posts');
+    if(Object.prototype.hasOwnProperty.call(row,'title')&&!row.title) return res.status(400).json({error:'Title cannot be blank.'});
+    const {data,error}=await supabase.from('site_posts').update(row).eq('id',req.params.id).select().single(); if(error)throw error; res.json(data);
+  }catch(err){res.status(500).json({error:err.message||'Content update failed.'});}
 });
+app.delete('/api/admin/posts/:id',requireAdmin,async(req,res)=>{ if(!requireDb(res))return; const {error}=await supabase.from('site_posts').delete().eq('id',req.params.id); if(error)return res.status(500).json({error:error.message}); res.json({ok:true}); });
 
-app.get('/api/ads', async (_req,res) => {
-  if (!requireDb(res)) return;
-  const { data, error } = await supabase.from('site_ads').select('*').eq('active',true).order('created_at',{ascending:false});
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data || []);
+app.post('/api/admin/ads',requireAdmin,adUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    const placement=sanitizePlacement(req.body.placement); const dims=validateAdCreative(req.file,placement);
+    const title=clampText(req.body.title,140); if(!title)return res.status(400).json({error:'Ad title is required.'});
+    const assetUrl=await storeFile(req.file,'ads');
+    const row={title,placement,side_position:placement==='side'?sanitizeSide(req.body.side_position):'auto',asset_url:assetUrl,asset_type:req.file.mimetype,link_url:safeHttpUrl(req.body.link_url),alt_text:clampText(req.body.alt_text,300)||title,active:bool(req.body.active,true),width_px:dims.width,height_px:dims.height,aspect_ratio:dims.ratio,updated_at:new Date().toISOString()};
+    const {data,error}=await supabase.from('site_ads').insert(row).select().single(); if(error)throw error; res.status(201).json(data);
+  }catch(err){res.status(400).json({error:err.message||'Advertisement upload failed.'});}
 });
+app.put('/api/admin/ads/:id',requireAdmin,adUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    const {data:existing,error:readErr}=await supabase.from('site_ads').select('*').eq('id',req.params.id).single(); if(readErr)throw readErr;
+    const placement=Object.prototype.hasOwnProperty.call(req.body,'placement')?sanitizePlacement(req.body.placement):existing.placement;
+    const row={updated_at:new Date().toISOString()};
+    if(Object.prototype.hasOwnProperty.call(req.body,'title')){row.title=clampText(req.body.title,140);if(!row.title)throw new Error('Ad title cannot be blank.');}
+    if(Object.prototype.hasOwnProperty.call(req.body,'placement'))row.placement=placement;
+    if(Object.prototype.hasOwnProperty.call(req.body,'side_position'))row.side_position=placement==='side'?sanitizeSide(req.body.side_position):'auto';
+    if(Object.prototype.hasOwnProperty.call(req.body,'link_url'))row.link_url=safeHttpUrl(req.body.link_url);
+    if(Object.prototype.hasOwnProperty.call(req.body,'alt_text'))row.alt_text=clampText(req.body.alt_text,300);
+    if(Object.prototype.hasOwnProperty.call(req.body,'active'))row.active=bool(req.body.active);
+    if(req.file){const dims=validateAdCreative(req.file,placement);row.asset_url=await storeFile(req.file,'ads');row.asset_type=req.file.mimetype;row.width_px=dims.width;row.height_px=dims.height;row.aspect_ratio=dims.ratio;} else validateExistingAdDimensions(existing,placement);
+    const {data,error}=await supabase.from('site_ads').update(row).eq('id',req.params.id).select().single(); if(error)throw error; res.json(data);
+  }catch(err){res.status(400).json({error:err.message||'Advertisement update failed.'});}
+});
+app.delete('/api/admin/ads/:id',requireAdmin,async(req,res)=>{ if(!requireDb(res))return; const {error}=await supabase.from('site_ads').delete().eq('id',req.params.id); if(error)return res.status(500).json({error:error.message}); res.json({ok:true}); });
 
-app.get('/api/admin/posts', requireAdmin, async (_req,res) => {
-  if (!requireDb(res)) return;
-  const { data, error } = await supabase.from('site_posts').select('*').order('created_at',{ascending:false});
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data || []);
-});
-app.get('/api/admin/ads', requireAdmin, async (_req,res) => {
-  if (!requireDb(res)) return;
-  const { data, error } = await supabase.from('site_ads').select('*').order('created_at',{ascending:false});
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data || []);
-});
-
-app.post('/api/admin/cms', requireAdmin, async (req,res) => {
-  if (!requireDb(res)) return;
-  const allowed = ['cms-hero-sub','cms-news-sub','cms-youtube-url'];
-  const rows = allowed.filter(k => Object.prototype.hasOwnProperty.call(req.body,k)).map(k => ({ key:k, value:String(req.body[k] || '').slice(0,4000), updated_at:new Date().toISOString() }));
-  const { error } = await supabase.from('site_cms').upsert(rows,{onConflict:'key'});
-  if (error) return res.status(500).json({ error:error.message });
-  res.json({ok:true});
-});
-
-app.post('/api/admin/posts', requireAdmin, upload.single('image'), async (req,res) => {
-  if (!requireDb(res)) return;
-  try {
-    if (req.file && !isImage(req.file)) return res.status(400).json({ error:'Post photos must be JPG, PNG, or WebP.' });
-    const title = String(req.body.title || '').trim();
-    if (!title) return res.status(400).json({ error:'Title is required.' });
-    const imageUrl = req.file ? await storeFile(req.file,'posts') : null;
-    const row = {
-      title: title.slice(0,180),
-      content: String(req.body.content || '').slice(0,30000),
-      category: String(req.body.category || 'News').slice(0,80),
-      content_type: sanitizeType(req.body.content_type),
-      target_page: sanitizeTarget(req.body.target_page),
-      image_url: imageUrl,
-      image_alt: String(req.body.image_alt || '').slice(0,300),
-      video_url: String(req.body.video_url || '').slice(0,1200),
-      published: true
-    };
-    const { data, error } = await supabase.from('site_posts').insert(row).select().single();
-    if (error) throw error;
-    res.status(201).json(data);
-  } catch (err) { res.status(500).json({ error: err.message || 'Post upload failed.' }); }
-});
-
-app.post('/api/admin/ads', requireAdmin, upload.single('asset'), async (req,res) => {
-  if (!requireDb(res)) return;
-  try {
-    if (!isAdAsset(req.file)) return res.status(400).json({ error:'Ad asset must be JPG, PNG, WebP, or PDF.' });
-    const title = String(req.body.title || '').trim();
-    if (!title) return res.status(400).json({ error:'Ad title is required.' });
-    const assetUrl = await storeFile(req.file,'ads');
-    const row = {
-      title: title.slice(0,140),
-      placement: sanitizePlacement(req.body.placement),
-      asset_url: assetUrl,
-      asset_type: req.file.mimetype,
-      link_url: String(req.body.link_url || '').slice(0,1200),
-      alt_text: String(req.body.alt_text || title).slice(0,300),
-      active: true
-    };
-    const { data, error } = await supabase.from('site_ads').insert(row).select().single();
-    if (error) throw error;
-    res.status(201).json(data);
-  } catch (err) { res.status(500).json({ error: err.message || 'Ad upload failed.' }); }
-});
-
-app.delete('/api/admin/posts/:id', requireAdmin, async (req,res) => {
-  if (!requireDb(res)) return;
-  const { error } = await supabase.from('site_posts').delete().eq('id',req.params.id);
-  if (error) return res.status(500).json({ error:error.message });
-  res.json({ok:true});
-});
-app.delete('/api/admin/ads/:id', requireAdmin, async (req,res) => {
-  if (!requireDb(res)) return;
-  const { error } = await supabase.from('site_ads').delete().eq('id',req.params.id);
-  if (error) return res.status(500).json({ error:error.message });
-  res.json({ok:true});
-});
-
-app.use((err,_req,res,_next) => {
-  if (err instanceof multer.MulterError) return res.status(400).json({ error: err.code === 'LIMIT_FILE_SIZE' ? 'File is too large. Maximum 12 MB.' : err.message });
-  console.error(err);
-  res.status(500).json({ error:'Server error.' });
-});
-
-app.get('*', (_req,res)=>res.sendFile(path.join(PUBLIC_DIR,'index.html')));
-
-ensureBucket().catch(err=>console.error('Bucket setup:',err.message));
+app.use((err,_req,res,_next)=>{ if(err instanceof multer.MulterError)return res.status(400).json({error:err.code==='LIMIT_FILE_SIZE'?'File is too large. Images may be up to 5 MB; PDFs may be up to 12 MB.':err.message}); console.error(err);res.status(500).json({error:'Server error.'}); });
+app.get('*',(_req,res)=>res.sendFile(path.join(PUBLIC_DIR,'index.html')));
+ensureBucket().catch(err=>console.error('Storage bucket setup:',err.message));
 app.listen(PORT,()=>console.log(`Liquid Sports website listening on ${PORT}`));
