@@ -30,6 +30,7 @@ const PDF_MAX_BYTES = 12 * 1024 * 1024;
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: PDF_MAX_BYTES, files: 2 } });
 const postUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'attachment', maxCount: 1 }]);
 const adUpload = upload.single('asset');
+const sponsorUpload = upload.single('logo');
 
 function requireDb(res) { if (!supabase) { res.status(503).json({ error: 'CMS database is not configured on this server.' }); return false; } return true; }
 function secureEqual(a, b) { const aa = Buffer.from(String(a || '')); const bb = Buffer.from(String(b || '')); return aa.length === bb.length && crypto.timingSafeEqual(aa, bb); }
@@ -46,6 +47,8 @@ function sanitizeSport(v) { return ['football','basketball','baseball','all'].in
 function sanitizeType(v) { return ['news','photo','video','media'].includes(v) ? v : 'news'; }
 function sanitizePlacement(v) { return ['side','bottom'].includes(v) ? v : 'side'; }
 function sanitizeSide(v) { return ['left','right','auto'].includes(v) ? v : 'auto'; }
+function sanitizeSponsorTarget(v) { return ['football','basketball','both'].includes(v) ? v : 'both'; }
+function isPng(file) { return !!file && file.mimetype === 'image/png'; }
 function safeHttpUrl(v, allowRelative=false) { const raw=String(v||'').trim(); if(!raw) return ''; if(allowRelative && raw.startsWith('/')) return raw.slice(0,1200); try { const u=new URL(raw); return ['http:','https:'].includes(u.protocol) ? u.href.slice(0,1200) : ''; } catch { return ''; } }
 function isoDate(v) { if(!v) return new Date().toISOString(); const d=new Date(v); return Number.isNaN(d.valueOf()) ? new Date().toISOString() : d.toISOString(); }
 
@@ -94,8 +97,33 @@ app.post('/api/admin/auth',requireAdmin,(_req,res)=>res.json({ok:true}));
 app.get('/api/cms',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_cms').select('key,value'); if(error)return res.status(500).json({error:error.message}); res.json(Object.fromEntries((data||[]).map(r=>[r.key,r.value]))); });
 app.get('/api/posts',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_posts').select('*').eq('published',true).order('published_at',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
 app.get('/api/ads',async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_ads').select('*').eq('active',true).order('created_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+
+// Public sponsor feed consumed by the Football and Basketball games.
+// The CMS/database remain private; only active sponsor display fields are exposed.
+app.get('/api/game-sponsors',async(req,res)=>{
+  res.set('Access-Control-Allow-Origin','*');
+  res.set('Cross-Origin-Resource-Policy','cross-origin');
+  res.set('Cache-Control','public, max-age=60');
+  if(!requireDb(res))return;
+  const game=String(req.query.game||'').toLowerCase();
+  if(!['football','basketball'].includes(game)) return res.status(400).json({error:'game must be football or basketball'});
+  const {data,error}=await supabase.from('game_sponsors')
+    .select('id,name,game_target,category,footwear,offer_text,logo_url,youtube_url,image_card_text,video_card_text,active,updated_at')
+    .eq('active',true)
+    .in('game_target',[game,'both'])
+    .order('updated_at',{ascending:false});
+  if(error)return res.status(500).json({error:error.message});
+  res.json(data||[]);
+});
 app.get('/api/admin/posts',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_posts').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
 app.get('/api/admin/ads',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_ads').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
+
+app.get('/api/admin/sponsors',requireAdmin,async(_req,res)=>{
+  if(!requireDb(res))return;
+  const {data,error}=await supabase.from('game_sponsors').select('*').order('updated_at',{ascending:false});
+  if(error)return res.status(500).json({error:error.message});
+  res.json(data||[]);
+});
 
 app.post('/api/admin/cms',requireAdmin,async(req,res)=>{ if(!requireDb(res))return; const allowed=['cms-hero-sub']; const rows=allowed.filter(k=>Object.prototype.hasOwnProperty.call(req.body,k)).map(k=>({key:k,value:clampText(req.body[k],4000),updated_at:new Date().toISOString()})); if(!rows.length)return res.json({ok:true}); const {error}=await supabase.from('site_cms').upsert(rows,{onConflict:'key'}); if(error)return res.status(500).json({error:error.message}); res.json({ok:true}); });
 
@@ -181,6 +209,59 @@ app.put('/api/admin/ads/:id',requireAdmin,adUpload,async(req,res)=>{
   }catch(err){res.status(400).json({error:err.message||'Advertisement update failed.'});}
 });
 app.delete('/api/admin/ads/:id',requireAdmin,async(req,res)=>{ if(!requireDb(res))return; const {error}=await supabase.from('site_ads').delete().eq('id',req.params.id); if(error)return res.status(500).json({error:error.message}); res.json({ok:true}); });
+
+function buildSponsorRow(body) {
+  const has=k=>Object.prototype.hasOwnProperty.call(body,k);
+  const row={updated_at:new Date().toISOString()};
+  if(has('name')) row.name=clampText(body.name,160);
+  if(has('game_target')) row.game_target=sanitizeSponsorTarget(body.game_target);
+  if(has('category')) row.category=clampText(body.category,80)||'General';
+  if(has('footwear')) row.footwear=bool(body.footwear);
+  if(has('offer_text')) row.offer_text=clampText(body.offer_text,700);
+  if(has('youtube_url')) row.youtube_url=safeHttpUrl(body.youtube_url);
+  if(has('image_card_text')) row.image_card_text=clampText(body.image_card_text,1200);
+  if(has('video_card_text')) row.video_card_text=clampText(body.video_card_text,1200);
+  if(has('active')) row.active=bool(body.active);
+  return row;
+}
+
+app.post('/api/admin/sponsors',requireAdmin,sponsorUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    if(req.file&&!isPng(req.file)) return res.status(400).json({error:'Sponsor logo must be a PNG file.'});
+    validateImageSize(req.file);
+    if(req.body.youtube_url && !isYouTubeUrl(req.body.youtube_url)) return res.status(400).json({error:'Sponsor video must be a YouTube URL.'});
+    const row=buildSponsorRow(req.body);
+    if(!row.name) return res.status(400).json({error:'Sponsor name is required.'});
+    row.game_target=row.game_target||'both'; row.category=row.category||'General'; row.footwear=!!row.footwear;
+    row.offer_text=row.offer_text||''; row.image_card_text=row.image_card_text||''; row.video_card_text=row.video_card_text||''; row.active=Object.prototype.hasOwnProperty.call(row,'active')?row.active:true;
+    if(req.file) row.logo_url=await storeFile(req.file,'sponsors');
+    const {data,error}=await supabase.from('game_sponsors').insert(row).select().single(); if(error)throw error;
+    res.status(201).json(data);
+  }catch(err){res.status(400).json({error:err.message||'Sponsor could not be saved.'});}
+});
+
+app.put('/api/admin/sponsors/:id',requireAdmin,sponsorUpload,async(req,res)=>{
+  if(!requireDb(res))return;
+  try{
+    const {data:existing,error:readErr}=await supabase.from('game_sponsors').select('*').eq('id',req.params.id).single(); if(readErr)throw readErr;
+    if(req.file&&!isPng(req.file)) return res.status(400).json({error:'Sponsor logo must be a PNG file.'});
+    validateImageSize(req.file);
+    if(req.body.youtube_url && !isYouTubeUrl(req.body.youtube_url)) return res.status(400).json({error:'Sponsor video must be a YouTube URL.'});
+    const row=buildSponsorRow(req.body);
+    if(Object.prototype.hasOwnProperty.call(row,'name')&&!row.name) return res.status(400).json({error:'Sponsor name cannot be blank.'});
+    if(bool(req.body.remove_logo,false)) row.logo_url=null;
+    if(req.file) row.logo_url=await storeFile(req.file,'sponsors');
+    const {data,error}=await supabase.from('game_sponsors').update(row).eq('id',req.params.id).select().single(); if(error)throw error;
+    res.json(data);
+  }catch(err){res.status(400).json({error:err.message||'Sponsor could not be updated.'});}
+});
+app.delete('/api/admin/sponsors/:id',requireAdmin,async(req,res)=>{
+  if(!requireDb(res))return;
+  const {error}=await supabase.from('game_sponsors').delete().eq('id',req.params.id);
+  if(error)return res.status(500).json({error:error.message});
+  res.json({ok:true});
+});
 
 app.use((err,_req,res,_next)=>{ if(err instanceof multer.MulterError)return res.status(400).json({error:err.code==='LIMIT_FILE_SIZE'?'File is too large. Images may be up to 5 MB; PDFs may be up to 12 MB.':err.message}); console.error(err);res.status(500).json({error:'Server error.'}); });
 app.get('*',(_req,res)=>res.sendFile(path.join(PUBLIC_DIR,'index.html')));

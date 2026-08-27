@@ -10,7 +10,7 @@
   </div>
 
   <div id="cmsApp" class="cms-app hidden">
-    <aside class="sidebar"><div class="cms-brand"><img src="/assets/liquid-sports-logo.webp" alt=""><div><strong>Liquid Sports</strong><span>CMS Dashboard</span></div></div><nav><button class="side-tab active" data-tab="posts">News / Video / Media</button><button class="side-tab" data-tab="ads">Advertisements</button><button class="side-tab" data-tab="site">Site Text</button></nav><div class="side-note"><strong>CMS QUICK TIP</strong><p>Everything here can be added, edited, published/unpublished, or deleted. Front-page content is controlled by the Featured checkbox.</p></div></aside>
+    <aside class="sidebar"><div class="cms-brand"><img src="/assets/liquid-sports-logo.webp" alt=""><div><strong>Liquid Sports</strong><span>CMS Dashboard</span></div></div><nav><button class="side-tab active" data-tab="posts">News / Video / Media</button><button class="side-tab" data-tab="ads">Advertisements</button><button class="side-tab" data-tab="sponsors">Game Sponsors</button><button class="side-tab" data-tab="site">Site Text</button></nav><div class="side-note"><strong>CMS QUICK TIP</strong><p>Everything here can be added, edited, published/unpublished, or deleted. Front-page content is controlled by the Featured checkbox.</p></div></aside>
     <main class="admin-main">
       <header class="admin-top"><div><span>WELCOME BACK</span><h1>Content Manager</h1></div><div class="top-actions"><a href="/" target="_blank">View Website ↗</a><button id="logoutBtn">Log Out</button></div></header>
 
@@ -25,6 +25,12 @@
         <div class="section-head"><div><h2>Advertisement Manager</h2><p>Narrow side rails and bottom banners remain invisible until an active ad is published.</p></div><button id="newAdBtn" class="primary">+ Add Advertisement</button></div>
         <div class="ad-rules"><div><strong>Side rail</strong><span>JPG/PNG/WebP • max 5 MB • narrow ratio 0.15-0.50 • 120-900 px wide • 300-2400 px tall • displayed no wider than 180 px.</span></div><div><strong>Bottom banner</strong><span>JPG/PNG/WebP • max 5 MB • ratio 3.5-14.0 • 480-3000 px wide • max 800 px tall • displayed no wider than 970 px.</span></div><div><strong>PDF</strong><span>Accepted up to 12 MB and displayed as a safe PDF ad card. Destination URL is optional.</span></div></div>
         <div id="adsList" class="item-list"></div>
+      </section>
+
+      <section id="sponsorsTab" class="admin-tab">
+        <div class="section-head"><div><h2>Game Sponsor Manager</h2><p>Add real sponsors once, then choose Football, Basketball, or Both. These sponsors can appear in Dynasty and Online play; Classroom and Old School sponsorship mode exclude them.</p></div><button id="newSponsorBtn" class="primary">+ Add Sponsor</button></div>
+        <div class="ad-rules"><div><strong>PNG logo</strong><span>Optional. PNG only, maximum 5 MB.</span></div><div><strong>YouTube video</strong><span>Optional. Paste a YouTube link; no video file upload is needed.</span></div><div><strong>Two text cards</strong><span>Put copy under the image card, video card, or both. If there is no video, the image/text card takes priority.</span></div></div>
+        <div id="sponsorsList" class="item-list"></div>
       </section>
 
       <section id="siteTab" class="admin-tab">
@@ -60,6 +66,20 @@
     <label class="span2">Alt text<input name="alt_text" maxlength="300"></label>
     <label class="check span2"><input name="active" type="checkbox" checked> Active / visible</label>
   </div><footer><button type="button" class="secondary close-ad-dialog">Cancel</button><button type="submit" class="primary">Save Advertisement</button></footer><div id="adMsg" class="msg"></div></form></dialog>
+
+  <dialog id="sponsorDialog" class="editor-dialog"><form id="sponsorForm" class="editor-form"><header><div><span>PLAYER SPONSORS</span><h2 id="sponsorDialogTitle">Add Sponsor</h2></div><button type="button" class="close-sponsor-dialog">×</button></header><input type="hidden" name="id"><div class="form-grid">
+    <label class="span2">Sponsor name *<input name="name" maxlength="160" required></label>
+    <label>Use in game<select name="game_target"><option value="both">Football + Basketball</option><option value="football">Football only</option><option value="basketball">Basketball only</option></select></label>
+    <label>Category<input name="category" maxlength="80" placeholder="Media, Restaurant, Technology..."></label>
+    <label class="check"><input name="footwear" type="checkbox"> Footwear sponsor</label>
+    <label class="check"><input name="active" type="checkbox" checked> Active / eligible for offers</label>
+    <label class="span2">Offer text<textarea name="offer_text" rows="3" maxlength="700" placeholder="Short company or partnership description shown with the offer."></textarea></label>
+    <label class="span2">PNG logo<input name="logo" type="file" accept="image/png"><small>Optional PNG, maximum 5 MB. Leave blank while editing to keep the current logo.</small></label>
+    <label class="check span2"><input name="remove_logo" type="checkbox"> Remove the current logo</label>
+    <label class="span2">Image-card text<textarea name="image_card_text" rows="4" maxlength="1200" placeholder="Text that appears with the logo/photo card after the coach accepts the sponsor."></textarea></label>
+    <label class="span2">YouTube link<input name="youtube_url" type="url" placeholder="https://www.youtube.com/watch?v=..."><small>Optional. YouTube or youtu.be links only.</small></label>
+    <label class="span2">Video-card text<textarea name="video_card_text" rows="4" maxlength="1200" placeholder="Text that appears with the YouTube card. Leave blank if you want only the video in that card."></textarea></label>
+  </div><footer><button type="button" class="secondary close-sponsor-dialog">Cancel</button><button type="submit" class="primary">Save Sponsor</button></footer><div id="sponsorMsg" class="msg"></div></form></dialog>
 
   <script src="/admin.js" defer></script>
 </body></html>
