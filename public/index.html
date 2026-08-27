@@ -1,180 +1,133 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="theme-color" content="#07111f"/>
-<meta name="description" content="Liquid Sports - original fictional football, basketball and baseball management games, online leagues, news, video, strategy guides and official merchandise."/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#06101d" name="theme-color"/>
+<meta content="Liquid Sports - original fictional football, basketball and baseball management universes, media, strategy guides, online leagues and official merchandise." name="description"/>
 <title>Liquid Sports | Manage. Compete. Win.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/styles.css"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="/styles.css" rel="stylesheet"/>
 </head>
 <body>
 <header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" data-page-link="home" href="#home" aria-label="Liquid Sports home">
-      <img class="brand-logo" src="/assets/liquid-sports-logo.webp" alt="Liquid Sports logo" width="64" height="64"/>
-      <div class="brand-text"><strong><span>Liquid</span> Sports</strong><small>Manage. Compete. Win.</small></div>
-    </a>
-    <button class="mobile-menu" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
-    <nav class="primary-nav" aria-label="Primary navigation">
-      <button class="nav-btn active" data-page="home">Home</button>
-      <button class="nav-btn" data-page="games">Games</button>
-      <button class="nav-btn" data-page="online">Online Leagues</button>
-      <button class="nav-btn" data-page="instructions">Instructions</button>
-      <button class="nav-btn" data-page="news">News</button>
-      <button class="nav-btn" data-page="videos">Video</button>
-      <button class="nav-btn" data-page="media">Media</button>
-      <button class="nav-btn" data-page="merch">Merch</button>
-      <button class="nav-btn" data-page="about">About</button>
-    </nav>
-  </div>
+<a aria-label="Liquid Sports home" class="brand" data-page-link="home" href="#home">
+<picture><source srcset="/assets/liquid-sports-logo.webp" type="image/webp"/><img alt="Liquid Sports logo" height="86" src="/assets/liquid-sports-logo.png" width="86"/></picture>
+<div class="brand-wordmark"><div><span>liquid</span>sports</div><small>MANAGE. COMPETE. WIN.</small></div>
+</a>
+<button aria-expanded="false" aria-label="Open navigation" class="mobile-menu" type="button">☰</button>
+<nav aria-label="Primary navigation" class="primary-nav"><button class="nav-btn active" data-page="home">Home</button><div class="nav-group"><button class="nav-btn nav-group-toggle" data-page="games">Games <span aria-hidden="true">⌄</span></button><div class="nav-dropdown"><button class="nav-sub-btn" data-page="games">All Games</button><button class="nav-sub-btn" data-page="fbfl">FBFL Manager</button><button class="nav-sub-btn" data-page="fbbl">FBBL Manager</button><button class="nav-sub-btn" data-page="fbdl">FBDL Manager</button></div></div><button class="nav-btn" data-page="online">Online Leagues</button><div class="nav-group"><button class="nav-btn nav-group-toggle" data-page="instructions">Instructions <span aria-hidden="true">⌄</span></button><div class="nav-dropdown"><button class="nav-sub-btn" data-page="instructions">All Instructions</button><button class="nav-sub-btn" data-page="instructions">Football</button><button class="nav-sub-btn" data-page="instructions">Basketball</button><button class="nav-sub-btn" data-page="instructions">Baseball</button></div></div><div class="nav-group"><button class="nav-btn nav-group-toggle" data-page="news">News, Video &amp; Media <span aria-hidden="true">⌄</span></button><div class="nav-dropdown"><button class="nav-sub-btn" data-page="news">News</button><button class="nav-sub-btn" data-page="videos">Video</button><button class="nav-sub-btn" data-page="media">Media</button></div></div><button class="nav-btn" data-page="merch">Merch</button><button class="nav-btn" data-page="about">About</button></nav>
 </header>
-
 <div class="ad-layout" id="adLayout">
-  <aside class="ad-rail ad-rail-left is-empty" id="leftAdRail" aria-label="Advertisement"></aside>
-  <main class="site-main">
-
-    <section class="page active" id="home" aria-labelledby="homeTitle">
-      <section class="hero-panel">
-        <div class="hero-brand"><img src="/assets/liquid-sports-logo.webp" alt="Liquid Sports logo"/></div>
-        <div class="hero-copy">
-          <span class="eyebrow">LIQUID SPORTS</span>
-          <h1 id="homeTitle">The sports management universe built around your decisions.</h1>
-          <p id="cms-hero-sub">Build your program. Develop your players. Make the calls. Chase championships.</p>
-          <div class="hero-actions">
-            <button class="button primary" data-page="games">Explore the Games</button>
-            <button class="button secondary" data-page="instructions">Instructions &amp; Guides</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="section-block">
-        <div class="section-heading">
-          <div><span class="eyebrow">THE FAKE BALLERS LEAGUES</span><h2>Choose your game.</h2></div>
-          <p>One Liquid Sports system. Three distinct management experiences.</p>
-        </div>
-        <div class="game-grid">
-          <article class="game-card football-card">
-            <div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-football-logo.webp" alt="Liquid Football logo"/><img class="league-logo" src="/assets/fake-ballers-fbfl-logo.webp" alt="Fake Ballers Football League logo"/></div>
-            <span class="game-kicker">LIQUID FOOTBALL</span>
-            <h3>FBFL Manager</h3>
-            <p>Recruit, train, scout, manage academics and budgets, make situational decisions and build a long-term football program.</p>
-            <div class="card-actions"><a class="button primary" href="https://fake-ballers-football-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play FBFL Manager</a><button class="text-button" data-page="fbfl">Game Page</button></div>
-          </article>
-          <article class="game-card basketball-card">
-            <div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-basketball-logo.webp" alt="Liquid Basketball logo"/><img class="league-logo" src="/assets/fake-ballers-fbbl-logo.webp" alt="Fake Ballers Basketball League logo"/></div>
-            <span class="game-kicker">LIQUID BASKETBALL</span>
-            <h3>FBBL Manager</h3>
-            <p>Recruit and develop a roster, manage rotations and resources, handle academics and budgets, and coach through game situations.</p>
-            <div class="card-actions"><a class="button primary blue" href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play FBBL Manager</a><button class="text-button" data-page="fbbl">Game Page</button></div>
-          </article>
-          <article class="game-card baseball-card">
-            <div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-baseball-logo.webp" alt="Liquid Baseball logo"/><img class="league-logo" src="/assets/fake-ballers-fbdl-logo.webp" alt="Fake Ballers Diamond League logo"/></div>
-            <span class="game-kicker">LIQUID BASEBALL</span>
-            <h3>FBDL Manager</h3>
-            <p>Build a ballclub, develop players, manage lineups and pitching, and prepare for the third Liquid Sports management game.</p>
-            <div class="card-actions"><button class="button muted" data-page="fbdl">Coming Soon</button></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="home-cms-panels" aria-label="Latest Liquid Sports content">
-        <article class="home-panel is-empty" id="homeNewsPanel"><header><div><span class="eyebrow">LATEST</span><h2>News</h2></div><button class="text-link" data-page="news">View all</button></header><div class="mini-feed" id="homeNews"></div></article>
-        <article class="home-panel is-empty" id="homeVideoPanel"><header><div><span class="eyebrow">WATCH</span><h2>Video</h2></div><button class="text-link" data-page="videos">View all</button></header><div class="mini-feed" id="homeVideos"></div></article>
-        <article class="home-panel is-empty" id="homeMediaPanel"><header><div><span class="eyebrow">DOWNLOAD</span><h2>Media</h2></div><button class="text-link" data-page="media">View all</button></header><div class="mini-feed" id="homeMedia"></div></article>
-      </section>
-
-      <section class="section-block guide-shelf">
-        <div class="section-heading"><div><span class="eyebrow">PLAY BETTER</span><h2>Strategy &amp; Media Guides</h2></div><p>Compact, useful guides focused on decisions that improve your program.</p></div>
-        <div class="guide-grid">
-          <a class="guide-card" href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf" target="_blank"><img src="/assets/fake-ballers-fbfl-logo.webp" alt="FBFL logo"/><div><span>FBFL MANAGER</span><h3>Football Strategy &amp; Media Guide</h3><p>Program building, weekly planning and football management priorities.</p><strong>Open PDF</strong></div></a>
-          <a class="guide-card" href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf" target="_blank"><img src="/assets/fake-ballers-fbbl-logo.webp" alt="FBBL logo"/><div><span>FBBL MANAGER</span><h3>Basketball Strategy &amp; Media Guide</h3><p>Rotation management, weekly priorities and basketball program strategy.</p><strong>Open PDF</strong></div></a>
-        </div>
-      </section>
-
-      <section class="merch-strip">
-        <img src="/assets/liquid-sports-logo.webp" alt="Liquid Sports logo"/>
-        <div><span class="eyebrow">OFFICIAL MERCHANDISE</span><h2>Liquid Sports gear is live.</h2><p>Shop the current collection. Product changes are managed directly in the merchandise store.</p></div>
-        <a class="button primary" href="https://www.bonfire.com/store/liquid-sports-merchandise/" target="_blank" rel="noopener noreferrer">Shop Merchandise</a>
-      </section>
-    </section>
-
-    <section class="page" id="games" aria-labelledby="gamesTitle">
-      <div class="page-head"><span class="eyebrow">GAMES</span><h1 id="gamesTitle">The Liquid Sports lineup.</h1><p>Football, basketball and baseball - presented as distinct games inside one consistent brand system.</p></div>
-      <div class="game-grid large-cards">
-        <article class="game-card"><div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-football-logo.webp" alt="Liquid Football logo"/><img class="league-logo" src="/assets/fake-ballers-fbfl-logo.webp" alt="FBFL logo"/></div><h2>FBFL Manager</h2><p>Football program management with recruiting, training, academics, budget, scouting, schemes, player development and game-day decisions.</p><div class="card-actions"><a class="button primary" href="https://fake-ballers-football-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play Football</a><button class="button secondary" data-page="fbfl">Details</button></div></article>
-        <article class="game-card"><div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-basketball-logo.webp" alt="Liquid Basketball logo"/><img class="league-logo" src="/assets/fake-ballers-fbbl-logo.webp" alt="FBBL logo"/></div><h2>FBBL Manager</h2><p>Basketball management with recruiting, development, rotations, academics, budgets, matchup planning and live situational coaching.</p><div class="card-actions"><a class="button primary blue" href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play Basketball</a><button class="button secondary" data-page="fbbl">Details</button></div></article>
-        <article class="game-card"><div class="game-card-logos"><img class="liquid-logo" src="/assets/liquid-baseball-logo.webp" alt="Liquid Baseball logo"/><img class="league-logo" src="/assets/fake-ballers-fbdl-logo.webp" alt="FBDL logo"/></div><h2>FBDL Manager</h2><p>Baseball management is the third Liquid Sports game and is currently being prepared for public release.</p><div class="card-actions"><button class="button muted" data-page="fbdl">Coming Soon</button></div></article>
-      </div>
-    </section>
-
-    <section class="page" id="online" aria-labelledby="onlineTitle">
-      <div class="page-head"><span class="eyebrow">ONLINE LEAGUES</span><h1 id="onlineTitle">Shared competition inside each game.</h1><p>Online league play stays inside the sport-specific managers. These resources explain the workflow and route you to the correct game.</p></div>
-      <div class="resource-card-grid three-up">
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-football-logo.webp" alt="Liquid Football logo"/><img src="/assets/fake-ballers-fbfl-logo.webp" alt="FBFL logo"/></div><h2>FBFL Online League</h2><ul><li>Human and CPU programs</li><li>Shared schedule and standings</li><li>Commissioner controls</li><li>Shared recruiting and offseason markets</li></ul><div class="stack-actions"><a class="button primary" href="/docs/Liquid_Football_Online_League_Instructions.pdf" target="_blank">Online League Guide</a><a class="button secondary" href="https://fake-ballers-football-league.onrender.com/" target="_blank" rel="noopener noreferrer">Enter FBFL</a></div></article>
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-basketball-logo.webp" alt="Liquid Basketball logo"/><img src="/assets/fake-ballers-fbbl-logo.webp" alt="FBBL logo"/></div><h2>FBBL Online League</h2><ul><li>Human and CPU programs</li><li>Shared competition calendar</li><li>Commissioner advancement</li><li>Shared recruiting and Transfer Station</li></ul><div class="stack-actions"><a class="button primary blue" href="/docs/Liquid_Basketball_Online_League_Instructions.pdf" target="_blank">Online League Guide</a><a class="button secondary" href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer">Enter FBBL</a></div></article>
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-baseball-logo.webp" alt="Liquid Baseball logo"/><img src="/assets/fake-ballers-fbdl-logo.webp" alt="FBDL logo"/></div><h2>FBDL Online League</h2><p>Online league support will be released with the public FBDL Manager launch.</p><button class="button muted" data-page="fbdl">Coming Soon</button></article>
-      </div>
-    </section>
-
-    <section class="page" id="instructions" aria-labelledby="instructionsTitle">
-      <div class="page-head"><span class="eyebrow">INSTRUCTIONS</span><h1 id="instructionsTitle">Learn the systems without the clutter.</h1><p>Official game, online league, teacher, student and strategy resources.</p></div>
-      <div class="resource-card-grid three-up">
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-football-logo.webp" alt="Liquid Football logo"/><img src="/assets/fake-ballers-fbfl-logo.webp" alt="FBFL logo"/></div><h2>Football</h2><div class="resource-list"><a href="/docs/Liquid_Football_Complete_Instructions.pdf" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Football_Game_Instructions.pdf" target="_blank">Game Guide</a><a href="/docs/Liquid_Football_Online_League_Instructions.pdf" target="_blank">Online League Guide</a><a href="/docs/Liquid_Football_Teacher_Instructions.pdf" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Football_Student_Instructions.pdf" target="_blank">Student Guide</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf" target="_blank">Strategy &amp; Media Guide</a></div></article>
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-basketball-logo.webp" alt="Liquid Basketball logo"/><img src="/assets/fake-ballers-fbbl-logo.webp" alt="FBBL logo"/></div><h2>Basketball</h2><div class="resource-list"><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Basketball_Game_Instructions.pdf" target="_blank">Game Guide</a><a href="/docs/Liquid_Basketball_Online_League_Instructions.pdf" target="_blank">Online League Guide</a><a href="/docs/Liquid_Basketball_Teacher_Instructions.pdf" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Basketball_Student_Instructions.pdf" target="_blank">Student Guide</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf" target="_blank">Strategy &amp; Media Guide</a></div></article>
-        <article class="resource-card"><div class="resource-brand"><img src="/assets/liquid-baseball-logo.webp" alt="Liquid Baseball logo"/><img src="/assets/fake-ballers-fbdl-logo.webp" alt="FBDL logo"/></div><h2>Baseball</h2><div class="resource-list"><a href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">Game Guide</a><span>More FBDL resources will be added at launch.</span></div></article>
-      </div>
-    </section>
-
-    <section class="page content-page" id="news" aria-labelledby="newsTitle"><div class="page-head"><span class="eyebrow">NEWS</span><h1 id="newsTitle">Liquid Sports News</h1><p>Updates and stories published through the private CMS.</p></div><div class="cms-lane-grid" id="newsLanes"></div></section>
-    <section class="page content-page" id="videos" aria-labelledby="videosTitle"><div class="page-head"><span class="eyebrow">VIDEO</span><h1 id="videosTitle">Liquid Sports Video</h1><p>Game features, interviews and breakdowns published through the CMS.</p></div><div class="cms-lane-grid" id="videoLanes"></div></section>
-    <section class="page content-page" id="media" aria-labelledby="mediaTitle"><div class="page-head"><span class="eyebrow">MEDIA</span><h1 id="mediaTitle">Guides, photos and downloads</h1><p>Downloadable media and photo stories published through the CMS.</p></div><div class="cms-lane-grid" id="mediaLanes"></div></section>
-
-    <section class="page individual-page" id="fbfl" aria-labelledby="fbflTitle">
-      <div class="individual-hero"><div class="individual-logos"><img src="/assets/liquid-football-logo.webp" alt="Liquid Football logo"/><img src="/assets/fake-ballers-fbfl-logo.webp" alt="FBFL logo"/></div><div><span class="eyebrow">LIQUID FOOTBALL</span><h1 id="fbflTitle">FBFL Manager</h1><p>Recruit. Train. Manage. Compete.</p><a class="button primary" href="https://fake-ballers-football-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play Fullscreen</a></div></div>
-      <div class="individual-columns"><article><h2>Program Management</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budgets, Transfer Station, community service, scouting, training, schemes and career outcomes connect to the weekly football loop.</p></article><article><h2>Player Resources</h2><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf" target="_blank">Strategy &amp; Media Guide</a><a href="/docs/Liquid_Football_Complete_Instructions.pdf" target="_blank">Complete Instructions</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video</a></article></div>
-      <div class="game-embed"><iframe data-src="https://fake-ballers-football-league.onrender.com/" title="FBFL Manager" loading="lazy" allowfullscreen></iframe></div>
-    </section>
-
-    <section class="page individual-page" id="fbbl" aria-labelledby="fbblTitle">
-      <div class="individual-hero"><div class="individual-logos"><img src="/assets/liquid-basketball-logo.webp" alt="Liquid Basketball logo"/><img src="/assets/fake-ballers-fbbl-logo.webp" alt="FBBL logo"/></div><div><span class="eyebrow">LIQUID BASKETBALL</span><h1 id="fbblTitle">FBBL Manager</h1><p>Recruit. Develop. Manage. Compete.</p><a class="button primary blue" href="https://fake-ballers-basketball-league.onrender.com/" target="_blank" rel="noopener noreferrer">Play Fullscreen</a></div></div>
-      <div class="individual-columns"><article><h2>Dynasty Management</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budgets, Transfer Station, community service, scouting, development, rotation management and coaching decisions all matter.</p></article><article><h2>Player Resources</h2><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf" target="_blank">Strategy &amp; Media Guide</a><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf" target="_blank">Complete Instructions</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video</a></article></div>
-      <div class="game-embed"><iframe data-src="https://fake-ballers-basketball-league.onrender.com/" title="FBBL Manager" loading="lazy" allowfullscreen></iframe></div>
-    </section>
-
-    <section class="page individual-page" id="fbdl" aria-labelledby="fbdlTitle">
-      <div class="individual-hero"><div class="individual-logos"><img src="/assets/liquid-baseball-logo.webp" alt="Liquid Baseball logo"/><img src="/assets/fake-ballers-fbdl-logo.webp" alt="FBDL logo"/></div><div><span class="eyebrow">LIQUID BASEBALL</span><h1 id="fbdlTitle">FBDL Manager</h1><p>Fake Ballers Diamond League.</p><span class="status-pill">COMING SOON</span></div></div>
-      <div class="coming-card"><h2>Baseball is joining Liquid Sports.</h2><p>FBDL Manager is being prepared as the third public game with roster construction, player development, situational baseball and long-term club management at its core.</p><a class="button secondary" href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">Game Guide</a></div>
-    </section>
-
-    <section class="page" id="merch" aria-labelledby="merchTitle">
-      <div class="page-head"><span class="eyebrow">OFFICIAL MERCHANDISE</span><h1 id="merchTitle">Liquid Sports Merchandise</h1><p>The official store is live. Inventory and new designs update at the store without rebuilding this website.</p></div>
-      <div class="merch-page-card"><img src="/assets/liquid-sports-logo.webp" alt="Liquid Sports logo"/><div><h2>Shop the Liquid Sports collection.</h2><p>Merchandise, sizes, availability and checkout are handled by the external storefront.</p><a class="button primary" href="https://www.bonfire.com/store/liquid-sports-merchandise/" target="_blank" rel="noopener noreferrer">Open Merchandise Store</a></div></div>
-    </section>
-
-    <section class="page" id="about" aria-labelledby="aboutTitle">
-      <div class="page-head"><span class="eyebrow">ABOUT</span><h1 id="aboutTitle">Liquid Sports</h1><p>Original fictional sports-management games, leagues, media and classroom resources.</p></div>
-      <div class="about-grid"><article><h2>Contact</h2><p><strong>john@liquidbasketball.com</strong></p><div class="contact-actions"><a class="button primary blue" href="mailto:liquidbasketballict.@gmail.com">Email</a><a class="button secondary" href="tel:+13163232749">Call</a><a class="button secondary" href="sms:+13163232749">Text</a></div></article><article><h2>Fictional Universe</h2><p>Programs, leagues, players, coaches, companies, facilities, sponsors, locations, statistics and events are fictional creative elements unless specifically identified otherwise. Similarity to real people, products or organizations is unintentional.</p></article><article><h2>Legal</h2><p><a href="/privacy.html">Privacy Policy</a><br/><a href="/terms.html">Terms of Service</a></p></article><article><h2>Merchandise</h2><p>Official Liquid Sports merchandise is available through the live store.</p><button class="text-button" data-page="merch">View Merch Page</button></article></div>
-    </section>
-
-    <div class="mobile-ad-stack is-empty" id="mobileAdStack" aria-label="Advertisements"></div>
-    <div class="bottom-ad-rail is-empty" id="bottomAdRail" aria-label="Advertisement"></div>
-  </main>
-  <aside class="ad-rail ad-rail-right is-empty" id="rightAdRail" aria-label="Advertisement"></aside>
+<aside aria-label="Advertisement" class="ad-rail ad-rail-left is-empty" id="leftAdRail"></aside>
+<main class="site-main">
+<section aria-labelledby="homeTitle" class="page active" id="home">
+<div class="tri-season-hero">
+<div aria-hidden="true" class="season-slice season-football"></div>
+<div aria-hidden="true" class="season-slice season-basketball"></div>
+<div aria-hidden="true" class="season-slice season-baseball"></div>
+<div aria-hidden="true" class="hero-shade"></div>
+<div class="hero-copy">
+<span class="eyebrow">LIQUID SPORTS • HOME OF THE FAKE BALLERS LEAGUES</span>
+<h1 id="homeTitle">The ultimate sports management universe.</h1>
+<p id="cms-hero-sub">Build your program. Develop your players. Make the calls. Chase championships.</p>
+</div><div aria-label="Liquid Sports seasonal lineup" class="season-line"><div class="season-marker fall"><strong>Fall</strong><span>Football</span></div><div class="season-marker winter"><strong>Winter</strong><span>Basketball</span></div><div class="season-marker spring"><strong>Spring</strong><span>Baseball</span></div></div>
+<div class="hero-game-grid">
+<article class="hero-game hero-football">
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div>
+<div><span class="sport-tag">FALL • FOOTBALL</span><h2>FBFL Manager</h2><p>Lead a football program through recruiting, training, academics, budget decisions, scouting and game-day strategy.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play FBFL Manager ↗</a></div>
+</article>
+<article class="hero-game hero-basketball">
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div>
+<div><span class="sport-tag">WINTER • BASKETBALL</span><h2>FBBL Manager</h2><p>Recruit, develop and manage a basketball dynasty with deep program systems and situational coaching decisions.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play FBBL Manager ↗</a></div>
+</article>
+<article class="hero-game hero-baseball">
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div>
+<div><span class="sport-tag">SPRING • BASEBALL</span><h2>FBDL Manager</h2><p>Build a ballclub, develop talent and prepare for the Fake Ballers Diamond League management experience.</p><button class="button green" data-page="fbdl">Coming Soon</button></div>
+</article>
 </div>
-
+</div>
+<section aria-label="Latest Liquid Sports content" class="home-cms-panels">
+<article class="home-panel is-empty" id="homeNewsPanel"><header><div><span class="eyebrow orange-text">LATEST</span><h2>News</h2></div><button class="text-link" data-page="news">View all →</button></header><div class="mini-feed" id="homeNews"></div></article>
+<article class="home-panel is-empty" id="homeVideoPanel"><header><div><span class="eyebrow blue-text">WATCH</span><h2>Video</h2></div><button class="text-link" data-page="videos">View all →</button></header><div class="mini-feed media-mini" id="homeVideos"></div></article>
+<article class="home-panel is-empty" id="homeMediaPanel"><header><div><span class="eyebrow green-text">DOWNLOAD</span><h2>Media</h2></div><button class="text-link" data-page="media">View all →</button></header><div class="mini-feed" id="homeMedia"></div></article>
+</section>
+<section class="guide-shelf">
+<div class="section-heading"><div><span class="eyebrow">PLAYER VALUE</span><h2>Strategy &amp; Media Guides</h2></div><p>Magazine-style deep dives designed to help you play better.</p></div>
+<div class="guide-grid guide-grid-two">
+<a class="guide-card guide-football" href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank"><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/><div><span>FBFL</span><h3>Football Strategy Guide</h3><p>Two-page player guide: program building, weekly planning and winning football habits.</p><strong>Open PDF ↗</strong></div></a>
+<a class="guide-card guide-basketball" href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank"><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/><div><span>FBBL</span><h3>Basketball Strategy Guide</h3><p>Two-page player guide: rotation management, weekly priorities and winning basketball habits.</p><strong>Open PDF ↗</strong></div></a>
+</div>
+</section><section class="home-merch-spotlight"><div class="merch-logo-wrap"><img alt="Liquid Sports logo" src="/assets/liquid-sports-logo.webp"/></div><div class="merch-copy"><span class="eyebrow orange-text">OFFICIAL LIQUID SPORTS MERCH</span><h2>Rep the Liquid Universe.</h2><p>The official merchandise store is live. New designs and products can be added to the store without rebuilding this website.</p><a class="button orange" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Official Merchandise ↗</a></div></section>
+</section>
+<section aria-labelledby="gamesTitle" class="page multi-sport-page" id="games">
+<div class="page-head"><span class="eyebrow">GAMES</span><h1 id="gamesTitle">Choose your universe.</h1><p>Football on the left, basketball in the middle, baseball on the right — the same Liquid Sports order everywhere.</p></div><div class="league-family-lockup"><img alt="Fake Ballers Football League, Fake Ballers Basketball League, and Fake Ballers Diamond League logos" src="/assets/fake-ballers-league-family.webp"/></div>
+<div class="sport-lane-grid">
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Manager</h2><p>Live now. Build a football program through the full Liquid Sports management loop.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Football ↗</a><button class="button ghost" data-page="fbfl">View FBFL Page</button></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Manager</h2><p>Live now. Build a basketball dynasty with recruiting, training, academics and live coaching decisions.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Basketball ↗</a><button class="button ghost" data-page="fbbl">View FBBL Page</button></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Manager</h2><p>Coming soon to the public site. The Diamond League is being prepared as the third Liquid Sports management universe.</p><button class="button green" data-page="fbdl">Coming Soon</button></article>
+</div>
+</section>
+<section aria-labelledby="onlineTitle" class="page multi-sport-page" id="online">
+<div class="page-head"><span class="eyebrow">ONLINE LEAGUES</span><h1 id="onlineTitle">Shared competition, official results.</h1><p>Online League Dynasty lives inside the individual games. The Liquid Sports site explains the system and routes coaches to the correct game.</p></div>
+<div class="sport-lane-grid online-grid">
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Online League</h2><ul><li>Claim existing programs</li><li>Shared schedule and standings</li><li>Official league results</li><li>Commissioner control</li><li>Shared recruiting and offseason markets</li></ul><a class="button orange" href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBFL ↗</a></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Online League</h2><ul><li>Human + CPU programs</li><li>Shared competition calendar</li><li>League-authoritative standings</li><li>Commissioner advancement</li><li>Shared recruiting and Transfer Station</li></ul><a class="button blue" href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBBL ↗</a></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Online League</h2><ul><li>Shared Diamond League concept</li><li>Commissioner-controlled competition</li><li>Official results and markets</li><li>Integrated with the FBDL universe</li></ul><button class="button green" data-page="fbdl">Coming Soon</button></article>
+</div>
+</section>
+<section aria-labelledby="instructionsTitle" class="page multi-sport-page" id="instructions">
+<div class="page-head"><span class="eyebrow">INSTRUCTIONS</span><h1 id="instructionsTitle">Learn the systems. Play with purpose.</h1><p>Official guides and short videos for game, classroom and online-league use.</p></div>
+<div class="sport-lane-grid instruction-grid">
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>Football</h2><div class="resource-list"><a href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Football_Game_Instructions.pdf?v=20260826-2" target="_blank">Game Guide</a><a href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online League Guide</a><a href="/docs/Liquid_Football_Teacher_Instructions.pdf?v=20260826-2" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Football_Student_Instructions.pdf?v=20260826-2" target="_blank">Student Guide</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy Media Guide</a></div></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>Basketball</h2><div class="resource-list"><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Basketball_Game_Instructions.pdf?v=20260826-2" target="_blank">Game Guide</a><a href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online League Guide</a><a href="/docs/Liquid_Basketball_Teacher_Instructions.pdf?v=20260826-2" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Basketball_Student_Instructions.pdf?v=20260826-2" target="_blank">Student Guide</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy Media Guide</a></div></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>Baseball</h2><div class="resource-list"><a href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">FBDL Game Guide</a><span>Additional classroom and online materials will be added with the public FBDL launch.</span></div></article>
+</div>
+</section>
+<section aria-labelledby="newsTitle" class="page content-page" id="news">
+<div class="page-head"><span class="eyebrow">NEWS</span><h1 id="newsTitle">Liquid Sports Newsroom</h1><p>Launches, updates, features and photo stories. Every item below is managed through the private CMS.</p></div>
+<div class="cms-lane-grid" id="newsLanes"></div>
+</section>
+<section aria-labelledby="videosTitle" class="page content-page" id="videos">
+<div class="page-head"><span class="eyebrow">VIDEO</span><h1 id="videosTitle">Watch Liquid Sports</h1><p>Embedded video links, game features, interviews and breakdowns - all controlled through the CMS.</p></div>
+<div class="cms-lane-grid" id="videoLanes"></div>
+</section>
+<section aria-labelledby="mediaTitle" class="page content-page" id="media">
+<div class="page-head"><span class="eyebrow">MEDIA</span><h1 id="mediaTitle">Guides, photo stories and downloads</h1><p>Football left, basketball center, baseball right. CMS media can include images, PDFs and downloadable resources.</p></div>
+<div class="cms-lane-grid" id="mediaLanes"></div>
+</section>
+<section aria-labelledby="fbflTitle" class="page individual-page football-page" id="fbfl">
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><div><span class="eyebrow">LIQUID FOOTBALL</span><h1 id="fbflTitle">FBFL Manager</h1><p>Fake Ballers Football League • Recruit. Train. Compete.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
+<div class="individual-columns"><article><h2>Build the program</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, scouting, training, schemes and career outcomes all connect to the weekly football loop.</p></article><article><h2>Player resources</h2><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy &amp; Media Guide ↗</a><a href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions ↗</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video ↗</a></article></div>
+<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-football-league.onrender.com/" loading="lazy" title="FBFL Manager"></iframe></div>
+</section>
+<section aria-labelledby="fbblTitle" class="page individual-page basketball-page" id="fbbl">
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASKETBALL</span><h1 id="fbblTitle">FBBL Manager</h1><p>Fake Ballers Basketball League • Recruit. Train. Compete.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
+<div class="individual-columns"><article><h2>Build the dynasty</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, matchup scouting, training, rotation management and coach career all matter.</p></article><article><h2>Player resources</h2><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy &amp; Media Guide ↗</a><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions ↗</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video ↗</a></article></div>
+<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-basketball-league.onrender.com/" loading="lazy" title="FBBL Manager"></iframe></div>
+</section>
+<section aria-labelledby="fbdlTitle" class="page individual-page baseball-page" id="fbdl">
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASEBALL</span><h1 id="fbdlTitle">FBDL Manager</h1><p>Fake Ballers Diamond League • Public launch coming soon.</p><span class="coming-pill">COMING SOON</span></div></div>
+<div class="fbdl-coming"><img alt="FBDL Manager coming soon promotional graphic" src="/assets/Liquid_Sports_FBDL_Launch_Promo.webp"/><div><h2>Baseball is joining the universe.</h2><p>FBDL Manager is being prepared as the third public game in the Liquid Sports universe, with roster construction, development, situational baseball and long-term program management at its core.</p><a class="button ghost" href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">Game Guide ↗</a></div></div>
+</section>
+<section aria-labelledby="merchTitle" class="page merch-page" id="merch"><div class="page-head merch-page-head"><span class="eyebrow">OFFICIAL MERCHANDISE</span><h1 id="merchTitle">Liquid Sports Merchandise</h1><p>Shop official Liquid Sports merchandise through the live store. Product selection, sizes, availability and new releases update at the store without changing this site.</p></div><div class="merch-hero"><div class="merch-brand-card"><img alt="Liquid Sports logo" src="/assets/liquid-sports-logo.webp"/><div><h2>Wear the universe.</h2><p>Liquid Sports is the master brand for the Fake Ballers football, basketball and diamond-league worlds. Merchandise opens in the official external store.</p><a class="button orange merch-shop-button" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Liquid Sports Merch ↗</a><small>Store inventory and checkout are managed by the merchandise storefront.</small></div></div><div class="merch-feature-grid"><article><h3>One permanent link</h3><p>The Liquid Sports site can keep pointing to the same store while merchandise changes over time.</p></article><article><h3>Liquid Universe branding</h3><p>Merchandise can feature Liquid Sports and the sport-specific Liquid identities while keeping the same core palette.</p></article><article><h3>Easy to expand</h3><p>New campaigns and designs can be launched in the store without changing the navigation or rebuilding this page.</p></article></div></div></section><section aria-labelledby="aboutTitle" class="page" id="about">
+<div class="page-head"><span class="eyebrow">ABOUT LIQUID SPORTS</span><h1 id="aboutTitle">Original sports-management worlds and media.</h1><p>Liquid Sports is the master brand for the Liquid Universe. The Fake Ballers Leagues are its football, basketball and diamond-league competition brands.</p></div>
+<div class="about-grid"><article><h2>Contact</h2><p>The visible contact identity remains <strong>john@liquidbasketball.com</strong>.</p><div class="contact-actions"><a class="button blue" href="mailto:liquidbasketballict.@gmail.com">Email</a><a class="button ghost" href="tel:+13163232749">Call</a><a class="button ghost" href="sms:+13163232749">Text</a></div></article><article><h2>Fictional universe</h2><p>Programs, leagues, players, coaches, companies, facilities, sponsors, locations, statistics and events are fictional creative elements unless specifically identified otherwise. Similarity to real people, products or organizations is unintentional.</p></article><article><h2>Legal</h2><p><a href="/privacy.html">Privacy Policy</a><br/><a href="/terms.html">Terms of Service</a></p></article><article><h2>Merchandise</h2><p>Official Liquid Sports merchandise is available through the live store.</p><a class="button orange" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Merch ↗</a></article></div>
+</section>
+<div aria-label="Advertisements" class="mobile-ad-stack is-empty" id="mobileAdStack"></div>
+<div aria-label="Advertisement" class="bottom-ad-rail is-empty" id="bottomAdRail"></div>
+</main>
+<aside aria-label="Advertisement" class="ad-rail ad-rail-right is-empty" id="rightAdRail"></aside>
+</div>
 <footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-brand"><img src="/assets/liquid-sports-logo.webp" alt="Liquid Sports logo"/><div><strong>Liquid Sports</strong><span>Manage. Compete. Win.</span></div></div>
-    <div class="footer-links"><button data-page="about">Contact</button><button data-page="merch">Merch</button><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
-    <p>© 2026 Liquid Sports. Liquid Sports, Liquid Football, Liquid Basketball, Liquid Baseball, FBFL Manager, FBBL Manager, FBDL Manager, Fake Ballers Football League, Fake Ballers Basketball League, and Fake Ballers Diamond League. All rights reserved.</p>
-  </div>
+<div class="footer-brand"><img alt="" src="/assets/liquid-sports-logo.webp"/><div><strong>Liquid Sports</strong><span>Manage. Compete. Win.</span></div></div>
+<div class="footer-links"><button data-page="about">Contact</button><button class="nav-btn" data-page="merch">Merch</button><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+<p>© 2026 Liquid Sports. Liquid Sports, Liquid Football, Liquid Basketball, Liquid Baseball, FBFL Manager, FBBL Manager, FBDL Manager, Fake Ballers Football League, Fake Ballers Basketball League, and Fake Ballers Diamond League. All rights reserved.</p>
 </footer>
-
-<dialog class="content-dialog" id="contentDialog"><button class="dialog-close" type="button" aria-label="Close">×</button><div id="dialogBody"></div></dialog>
-<script defer src="/site.js"></script>
+<dialog class="content-dialog" id="contentDialog"><button aria-label="Close" class="dialog-close" type="button">×</button><div id="dialogBody"></div></dialog>
+<script defer="" src="/site.js"></script>
 </body>
 </html>
