@@ -4,271 +4,306 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<meta content="#06101d" name="theme-color"/>
+<meta content="#06101d" name="theme-color"/><meta content="strict-origin-when-cross-origin" name="referrer"/>
 <meta content="Liquid Sports - original fictional football, basketball and baseball management universes, media, strategy guides, online leagues and official merchandise." name="description"/>
 <title>Liquid Sports | Manage. Compete. Win.</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="/styles.css" rel="stylesheet"/>
-<style id="liquid-sports-layout-fixes">
-/* 2026-08-27 navigation + home layout cleanup */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  display:grid;
-  grid-template-columns:minmax(260px,auto) 1fr;
-  align-items:center;
-  gap:24px;
-  min-height:112px;
-  padding:12px 24px;
-  background:#050d17;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.brand{
-  min-width:0;
-}
-.primary-nav{
-  position:static !important;
-  display:flex !important;
-  align-items:center;
-  justify-content:flex-end;
-  flex-wrap:wrap;
-  gap:8px;
-  width:100%;
-  margin:0;
-  padding:0;
-  background:transparent !important;
-  box-shadow:none !important;
-}
-.primary-nav .nav-btn{
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
-  padding:10px 13px;
-  margin:0;
-  border:1px solid transparent;
-  border-radius:10px;
-  background:transparent;
-  color:#f5f7fb;
-  font-size:.88rem;
-  font-weight:800;
-  letter-spacing:.02em;
-  line-height:1;
-  white-space:nowrap;
-}
-.primary-nav .nav-btn:hover,
-.primary-nav .nav-btn:focus-visible{
-  background:#101b2a;
-  border-color:rgba(255,255,255,.1);
-}
-.primary-nav .nav-btn.active{
-  background:#111c2b;
-  border-color:rgba(255,255,255,.08);
-  box-shadow:inset 0 -3px 0 #ff5b21;
-}
-.mobile-menu{
-  display:none;
-}
-.site-main{
-  min-width:0;
-}
-#home .tri-season-hero{
-  position:relative;
-  min-height:0 !important;
-  height:auto !important;
-  padding:56px 38px 38px;
-  overflow:visible;
-  background:
-    radial-gradient(circle at 50% -10%, rgba(30,105,255,.14), transparent 38%),
-    #07111f;
-}
-#home .hero-copy{
-  position:relative !important;
-  z-index:1;
-  width:min(920px,100%);
-  margin:0 0 32px;
-  padding:0;
-}
-#home .hero-copy h1{
-  margin:.35rem 0 .6rem;
-  max-width:900px;
-  font-size:clamp(2.7rem,5vw,5.4rem);
-  line-height:.94;
-}
-#home .hero-copy p{
-  max-width:900px;
-}
-#home .hero-game-grid{
-  position:relative !important;
-  z-index:2;
-  display:grid !important;
-  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  align-items:stretch;
-  gap:20px;
-  width:100%;
-  margin:0 !important;
-  padding:0 !important;
-}
-#home .hero-game{
-  display:flex !important;
-  flex-direction:column;
-  min-width:0;
-  min-height:100%;
-  padding:24px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:18px;
-  background:linear-gradient(180deg,rgba(17,29,45,.98),rgba(8,17,30,.98));
-  box-shadow:0 14px 34px rgba(0,0,0,.20);
-  overflow:hidden;
-}
-#home .hero-game .hero-brand-pair{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:14px;
-  min-height:96px;
-  margin-bottom:18px;
-}
-#home .hero-game .hero-brand-pair img{
-  width:auto;
-  max-width:47%;
-  height:82px;
-  object-fit:contain;
-}
-#home .hero-game h2{
-  margin:.1rem 0 .55rem;
-}
-#home .hero-game p{
-  margin:0 0 20px;
-}
-#home .hero-game .button{
-  margin-top:auto;
-}
-.contact-page{
-  padding-bottom:48px;
-}
-.contact-page-card{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:28px;
-  margin:0 auto;
-  padding:28px;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:18px;
-  background:#0b1625;
-}
-.contact-page-card h2{
-  margin:0 0 6px;
-}
-.contact-page-card p{
-  margin:0;
-}
-.contact-page-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:flex-end;
-}
-.footer-links{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:14px;
+<style id="liquid-sports-site-polish">
+/* Liquid Sports site polish — consistent visual system, accessibility, responsiveness */
+:root{
+  --ls-bg:#050d17;
+  --ls-bg-2:#07111f;
+  --ls-panel:#0b1625;
+  --ls-panel-2:#101d2e;
+  --ls-text:#f5f7fb;
+  --ls-muted:#b7c1cf;
+  --ls-line:rgba(255,255,255,.10);
+  --ls-line-strong:rgba(255,255,255,.18);
+  --ls-orange:#ff5b21;
+  --ls-blue:#2f80ff;
+  --ls-green:#2fbf71;
+  --ls-radius:16px;
+  --ls-radius-sm:11px;
+  --ls-shadow:0 14px 34px rgba(0,0,0,.20);
+  --ls-content:1440px;
 }
 
+html{scroll-behavior:smooth;background:var(--ls-bg)}
+body{margin:0;background:var(--ls-bg);color:var(--ls-text);overflow-x:hidden}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+a{color:inherit}
+button,input,select,textarea{font:inherit}
+
+.skip-link{
+  position:fixed;left:12px;top:12px;z-index:5000;
+  transform:translateY(-160%);padding:11px 14px;border-radius:10px;
+  background:#fff;color:#07111f;font-weight:800;text-decoration:none;
+  transition:transform .15s ease;
+}
+.skip-link:focus{transform:translateY(0)}
+
+/* Header / navigation */
+.topbar{
+  position:sticky;top:0;z-index:1000;
+  display:grid;grid-template-columns:minmax(250px,auto) 1fr;
+  align-items:center;gap:20px;min-height:96px;padding:10px clamp(14px,2.5vw,32px);
+  background:rgba(5,13,23,.97);border-bottom:1px solid var(--ls-line);
+  backdrop-filter:blur(14px);
+}
+.brand{min-width:0;text-decoration:none}
+.brand img{display:block}
+.primary-nav{
+  position:static!important;display:flex!important;align-items:center;justify-content:flex-end;
+  flex-wrap:wrap;gap:6px;width:100%;margin:0;padding:0;background:transparent!important;
+  box-shadow:none!important;
+}
+.primary-nav .nav-btn,
+.footer-links button,
+.footer-links a{
+  appearance:none;border:1px solid transparent;border-radius:10px;background:transparent;
+  color:var(--ls-text);font-weight:800;line-height:1.1;text-decoration:none;cursor:pointer;
+}
+.primary-nav .nav-btn{
+  display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 12px;
+  font-size:.86rem;letter-spacing:.02em;white-space:nowrap;
+}
+.primary-nav .nav-btn:hover{background:#101b2a;border-color:var(--ls-line)}
+.primary-nav .nav-btn.active,
+.primary-nav .nav-btn[aria-current="page"]{
+  background:#111c2b;border-color:var(--ls-line);box-shadow:inset 0 -3px 0 var(--ls-orange)
+}
+.mobile-menu{display:none;min-width:46px;min-height:44px;border:1px solid var(--ls-line);border-radius:10px;background:#101b2a;color:#fff;cursor:pointer}
+
+/* Universal focus treatment */
+:where(a,button,[tabindex]):focus-visible{
+  outline:3px solid #fff;outline-offset:3px;
+  box-shadow:0 0 0 5px rgba(47,128,255,.45);
+}
+
+/* Main page rhythm */
+.site-main{min-width:0;width:100%}
+.site-main>.page:not(#home){
+  width:min(var(--ls-content),calc(100% - 32px));margin:0 auto;
+  padding:clamp(34px,5vw,68px) clamp(2px,1.8vw,20px) clamp(46px,6vw,82px);
+}
+.page-head{max-width:900px;margin:0 0 clamp(24px,4vw,42px)}
+.page-head h1{margin:.25rem 0 .65rem;line-height:1;letter-spacing:-.02em}
+.page-head p{max-width:780px;color:var(--ls-muted);line-height:1.65}
+.eyebrow{letter-spacing:.07em;font-weight:900}
+
+/* Home hero */
+#home .tri-season-hero{
+  position:relative;min-height:0!important;height:auto!important;overflow:visible;
+  padding:clamp(42px,6vw,78px) clamp(18px,3.4vw,52px) clamp(30px,4vw,48px);
+  background:radial-gradient(circle at 50% -10%,rgba(47,128,255,.16),transparent 42%),var(--ls-bg-2);
+}
+#home .hero-copy{position:relative!important;z-index:1;width:min(980px,100%);margin:0 0 34px;padding:0}
+#home .hero-copy h1{max-width:960px;margin:.35rem 0 .7rem;font-size:clamp(2.65rem,5.5vw,5.5rem);line-height:.92}
+#home .hero-copy p{max-width:820px;color:#d9e1ec;font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.55}
+#home .hero-game-grid,
+.sport-lane-grid,
+.instruction-grid,
+.online-grid{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:stretch;gap:18px;width:100%;margin:0!important;padding:0!important;
+}
+#home .hero-game,
+.sport-lane,
+.home-panel,
+.guide-card,
+.individual-columns>article,
+.merch-feature-grid>article,
+.about-grid>article,
+.contact-page-card,
+.fbdl-coming,
+.merch-brand-card{
+  border:1px solid var(--ls-line);border-radius:var(--ls-radius);
+  background:linear-gradient(180deg,rgba(16,29,46,.98),rgba(8,17,30,.98));
+  box-shadow:var(--ls-shadow);
+}
+#home .hero-game{
+  display:flex!important;flex-direction:column;min-width:0;min-height:100%;padding:22px;overflow:hidden;
+}
+#home .hero-game .hero-brand-pair{display:flex;align-items:center;gap:12px;min-height:88px;margin-bottom:14px}
+#home .hero-game .hero-brand-pair img{width:auto;max-width:46%;height:76px;object-fit:contain}
+#home .hero-game h2{margin:.15rem 0 .5rem}
+#home .hero-game p{margin:0 0 18px;color:var(--ls-muted);line-height:1.55}
+#home .hero-game>div:last-child{display:flex;flex-direction:column;flex:1}
+#home .hero-game .button{margin-top:auto;align-self:flex-start}
+
+/* Button system — same dimensions and interaction pattern across the site */
+.button,
+a.button,
+button.button,
+.resource-button{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:44px;padding:11px 16px;border:1px solid transparent;border-radius:var(--ls-radius-sm);
+  font-weight:900;line-height:1.15;text-decoration:none;cursor:pointer;
+  transition:transform .14s ease,filter .14s ease,background .14s ease,border-color .14s ease;
+}
+.button:hover,.resource-button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.button:active,.resource-button:active{transform:translateY(0)}
+.button.orange{background:var(--ls-orange);color:#fff}
+.button.blue{background:var(--ls-blue);color:#fff}
+.button.green{background:var(--ls-green);color:#06150d}
+.button.ghost,.resource-button{
+  background:#111d2d;color:#fff;border-color:var(--ls-line-strong)
+}
+.button.ghost:hover,.resource-button:hover{background:#17263a;border-color:rgba(255,255,255,.28)}
+.text-link{
+  min-height:42px;padding:8px 10px;border:0;border-radius:9px;background:transparent;color:#fff;
+  font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;
+}
+.text-link:hover{background:rgba(255,255,255,.06)}
+
+/* Home content blocks */
+.home-cms-panels,.guide-shelf,.home-merch-spotlight{
+  width:min(var(--ls-content),calc(100% - 32px));margin:0 auto;
+}
+.home-cms-panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:34px 0}
+.home-panel{min-width:0;padding:20px}
+.home-panel>header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.guide-shelf{padding:10px 0 38px}
+.guide-grid-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.guide-card{min-width:0;padding:20px;text-decoration:none}
+.guide-card:hover{border-color:var(--ls-line-strong);transform:translateY(-1px)}
+.home-merch-spotlight{display:grid;grid-template-columns:minmax(150px,250px) 1fr;gap:26px;align-items:center;margin-bottom:48px;padding:24px;border:1px solid var(--ls-line);border-radius:var(--ls-radius);background:var(--ls-panel)}
+
+/* Three-sport lanes */
+.sport-lane{display:flex;flex-direction:column;min-width:0;padding:20px;overflow:hidden}
+.sport-lane h2{margin:.55rem 0 .45rem}
+.sport-lane p,.sport-lane li,.resource-list span{color:var(--ls-muted);line-height:1.55}
+.sport-lane ul{padding-left:1.2rem}
+.sport-lane .button{width:100%;margin-top:10px}
+.sport-lane .brand-pair{display:flex;align-items:center;gap:10px;min-height:76px}
+.sport-lane .brand-pair img{max-width:47%;height:66px;object-fit:contain}
+.league-family-logos{display:flex;align-items:center;justify-content:center;gap:clamp(18px,4vw,54px);margin:0 auto 28px}
+.league-family-logos img{width:auto;height:clamp(52px,6vw,78px);object-fit:contain}
+.resource-list{display:grid;gap:9px;margin-top:10px}
+.resource-list a{
+  display:flex;align-items:center;min-height:42px;padding:10px 12px;border:1px solid var(--ls-line);
+  border-radius:10px;background:#111d2d;color:#fff;font-weight:800;text-decoration:none
+}
+.resource-list a:hover{background:#17263a;border-color:var(--ls-line-strong)}
+
+/* Content / CMS pages */
+.cms-lane-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.cms-lane-grid>*{min-width:0}
+
+/* Individual game pages */
+.individual-hero{
+  display:grid;grid-template-columns:minmax(180px,320px) 1fr;gap:28px;align-items:center;
+  margin-bottom:22px;padding:24px;border:1px solid var(--ls-line);border-radius:var(--ls-radius);
+  background:linear-gradient(135deg,rgba(47,128,255,.11),rgba(255,91,33,.06)),var(--ls-panel)
+}
+.individual-brand-pair{display:flex;align-items:center;justify-content:center;gap:12px}
+.individual-brand-pair img{max-width:47%;max-height:110px;object-fit:contain}
+.individual-hero h1{margin:.2rem 0 .5rem}
+.individual-hero p{color:var(--ls-muted)}
+.individual-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}
+.individual-columns>article{padding:20px;min-width:0}
+.individual-columns p{color:var(--ls-muted);line-height:1.6}
+.resource-card{display:flex;flex-direction:column;gap:9px}
+.resource-card h2{margin-bottom:4px}
+.resource-button{width:100%}
+.game-embed{overflow:hidden;border:1px solid var(--ls-line);border-radius:var(--ls-radius);background:#000;box-shadow:var(--ls-shadow)}
+.game-embed iframe{display:block;width:100%;min-height:720px;border:0;background:#000}
+
+/* Merch / About / Contact */
+.merch-hero{display:grid;gap:18px}
+.merch-brand-card{display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:24px;align-items:center;padding:24px}
+.merch-feature-grid,.about-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.merch-feature-grid>article,.about-grid>article{padding:20px}
+.about-grid p,.merch-feature-grid p,.merch-brand-card p{color:var(--ls-muted);line-height:1.6}
+.contact-page-card{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:24px}
+.contact-page-card h2{margin:0 0 6px}.contact-page-card p{margin:0;color:var(--ls-muted)}
+.contact-page-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.fbdl-coming{padding:24px}
+
+/* Footer */
+.footer{
+  display:grid;grid-template-columns:auto 1fr;gap:18px 28px;align-items:center;
+  padding:26px clamp(18px,3vw,42px);border-top:1px solid var(--ls-line);background:#040a12
+}
+.footer-brand{display:flex;align-items:center;gap:12px}
+.footer-brand img{width:54px;height:54px;object-fit:contain}
+.footer-links{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.footer-links button,.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 11px}
+.footer-links button:hover,.footer-links a:hover{background:#101b2a;border-color:var(--ls-line)}
+.footer>p{grid-column:1/-1;margin:0;color:#8996a8;font-size:.78rem;line-height:1.5}
+
+/* Dialog */
+.content-dialog{max-width:min(900px,calc(100vw - 30px));max-height:calc(100vh - 30px);border:1px solid var(--ls-line-strong);border-radius:16px;background:var(--ls-panel);color:var(--ls-text)}
+.content-dialog::backdrop{background:rgba(0,0,0,.72)}
+.dialog-close{min-width:44px;min-height:44px;border:1px solid var(--ls-line);border-radius:10px;background:#111d2d;color:#fff;cursor:pointer}
+
 @media (max-width:1180px){
-  .topbar{
-    grid-template-columns:1fr auto;
-  }
-  .mobile-menu{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:46px;
-    height:42px;
-    border-radius:10px;
-  }
-  .primary-nav{
-    grid-column:1 / -1;
-    display:none !important;
-    justify-content:flex-start;
-    padding-top:8px;
-  }
-  .topbar.menu-open .primary-nav,
-  .primary-nav.open,
-  .primary-nav.is-open{
-    display:flex !important;
-  }
-  .primary-nav .nav-btn{
-    flex:1 1 150px;
-  }
+  .topbar{grid-template-columns:1fr auto}
+  .mobile-menu{display:inline-flex;align-items:center;justify-content:center}
+  .primary-nav{grid-column:1/-1;display:none!important;justify-content:flex-start;padding-top:7px}
+  .topbar.menu-open .primary-nav,.primary-nav.open,.primary-nav.is-open{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .primary-nav .nav-btn{width:100%}
 }
-@media (max-width:900px){
-  #home .tri-season-hero{
-    padding:42px 22px 28px;
-  }
-  #home .hero-game-grid{
-    grid-template-columns:1fr !important;
-  }
-  #home .hero-game{
-    display:grid !important;
-    grid-template-columns:minmax(150px,210px) 1fr;
-    gap:20px;
-    align-items:center;
-  }
-  #home .hero-game .hero-brand-pair{
-    margin:0;
-  }
-  .contact-page-card{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-  .contact-page-actions{
-    justify-content:flex-start;
-  }
+
+@media (max-width:980px){
+  #home .hero-game-grid,.sport-lane-grid,.instruction-grid,.online-grid{grid-template-columns:1fr!important}
+  #home .hero-game{display:grid!important;grid-template-columns:minmax(150px,210px) 1fr;gap:20px;align-items:center}
+  #home .hero-game .hero-brand-pair{margin:0}
+  .home-cms-panels,.cms-lane-grid,.about-grid,.merch-feature-grid{grid-template-columns:1fr 1fr}
+  .individual-hero{grid-template-columns:1fr}
+  .individual-brand-pair{justify-content:flex-start}
+  .game-embed iframe{min-height:650px}
 }
-@media (max-width:620px){
-  .topbar{
-    padding:10px 14px;
-    min-height:92px;
-  }
-  .brand-wordmark small{
-    font-size:.75rem;
-  }
-  .primary-nav .nav-btn{
-    flex:1 1 46%;
-  }
-  #home .hero-copy h1{
-    font-size:clamp(2.2rem,13vw,3.5rem);
-  }
-  #home .hero-game{
-    display:flex !important;
-  }
+
+@media (max-width:720px){
+  .site-main>.page:not(#home),.home-cms-panels,.guide-shelf,.home-merch-spotlight{width:min(100% - 24px,var(--ls-content))}
+  .topbar{min-height:84px;padding:8px 12px}
+  .brand-wordmark small{font-size:.72rem}
+  .topbar.menu-open .primary-nav,.primary-nav.open,.primary-nav.is-open{grid-template-columns:1fr 1fr}
+  #home .tri-season-hero{padding:36px 16px 24px}
+  #home .hero-copy h1{font-size:clamp(2.25rem,12vw,3.7rem)}
+  #home .hero-game{display:flex!important}
+  .home-cms-panels,.guide-grid-two,.cms-lane-grid,.about-grid,.merch-feature-grid,.individual-columns{grid-template-columns:1fr}
+  .home-merch-spotlight,.merch-brand-card{grid-template-columns:1fr}
+  .contact-page-card{align-items:flex-start;flex-direction:column}
+  .contact-page-actions{justify-content:flex-start;width:100%}
+  .contact-page-actions .button{width:100%}
+  .footer{grid-template-columns:1fr}
+  .footer-links{justify-content:flex-start}
+  .footer>p{grid-column:1}
+  .game-embed iframe{min-height:580px}
+}
+
+@media (max-width:460px){
+  .topbar.menu-open .primary-nav,.primary-nav.open,.primary-nav.is-open{grid-template-columns:1fr}
+  .primary-nav .nav-btn{justify-content:flex-start;padding-left:14px}
+  .button,a.button,button.button,.resource-button{width:100%}
+  .league-family-logos{gap:10px}.league-family-logos img{height:48px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 </style></head>
-<body>
+<body><a class="skip-link" href="#mainContent">Skip to main content</a>
 <header class="topbar">
 <a aria-label="Liquid Sports home" class="brand" data-page-link="home" href="#home">
-<picture><source srcset="/assets/liquid-sports-logo.webp" type="image/webp"/><img alt="Liquid Sports logo" height="86" src="/assets/liquid-sports-logo.png" width="86"/></picture>
+<picture><source srcset="/assets/liquid-sports-logo.webp" type="image/webp"/><img alt="Liquid Sports logo" decoding="async" height="86" src="/assets/liquid-sports-logo.png" width="86"/></picture>
 <div class="brand-wordmark"><div><span>liquid</span>sports</div><small>MANAGE. COMPETE. WIN.</small></div>
 </a>
 <button aria-expanded="false" aria-label="Open navigation" class="mobile-menu" type="button">☰</button>
-<nav aria-label="Primary navigation" class="primary-nav"><button class="nav-btn active" data-page="home">Home</button><button class="nav-btn" data-page="games">Games</button><button class="nav-btn" data-page="online">Online Leagues</button><button class="nav-btn" data-page="instructions">Instructions</button><button class="nav-btn" data-page="news">News</button><button class="nav-btn" data-page="videos">Video</button><button class="nav-btn" data-page="media">Media</button><button class="nav-btn" data-page="merch">Merch</button><button class="nav-btn" data-page="about">About</button></nav>
+<nav aria-label="Primary navigation" class="primary-nav"><button aria-controls="home" aria-current="page" class="nav-btn active" data-page="home" type="button">Home</button><button aria-controls="games" class="nav-btn" data-page="games" type="button">Games</button><button aria-controls="online" class="nav-btn" data-page="online" type="button">Online Leagues</button><button aria-controls="instructions" class="nav-btn" data-page="instructions" type="button">Instructions</button><button aria-controls="news" class="nav-btn" data-page="news" type="button">News</button><button aria-controls="videos" class="nav-btn" data-page="videos" type="button">Video</button><button aria-controls="media" class="nav-btn" data-page="media" type="button">Media</button><button aria-controls="merch" class="nav-btn" data-page="merch" type="button">Merch</button><button aria-controls="about" class="nav-btn" data-page="about" type="button">About</button></nav>
 </header>
 <div class="ad-layout" id="adLayout">
 <aside aria-label="Advertisement" class="ad-rail ad-rail-left is-empty" id="leftAdRail"></aside>
-<main class="site-main">
+<main class="site-main" id="mainContent" tabindex="-1">
 <section aria-labelledby="homeTitle" class="page active" id="home">
 <div class="tri-season-hero">
-
-
-
-
 <div class="hero-copy">
 <span class="eyebrow">LIQUID SPORTS • HOME OF THE FAKE BALLERS LEAGUES</span>
 <h1 id="homeTitle">The ultimate sports management universe.</h1>
@@ -276,58 +311,58 @@
 </div>
 <div class="hero-game-grid">
 <article class="hero-game hero-football">
-<div class="brand-pair hero-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div>
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Football logo" decoding="async" loading="lazy" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/></div>
 <div><h2>FBFL Manager</h2><p>Lead a football program through recruiting, training, academics, budget decisions, scouting and game-day strategy.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play FBFL Manager ↗</a></div>
 </article>
 <article class="hero-game hero-basketball">
-<div class="brand-pair hero-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div>
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Basketball logo" decoding="async" loading="lazy" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/></div>
 <div><h2>FBBL Manager</h2><p>Recruit, develop and manage a basketball dynasty with deep program systems and situational coaching decisions.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play FBBL Manager ↗</a></div>
 </article>
 <article class="hero-game hero-baseball">
-<div class="brand-pair hero-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div>
-<div><h2>FBDL Manager</h2><p>Build a ballclub, develop talent and prepare for the Fake Ballers Diamond League management experience.</p><button class="button green" data-page="fbdl">Coming Soon</button></div>
+<div class="brand-pair hero-brand-pair"><img alt="Liquid Baseball logo" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/></div>
+<div><h2>FBDL Manager</h2><p>Build a ballclub, develop talent and prepare for the Fake Ballers Diamond League management experience.</p><button aria-controls="fbdl" class="button green" data-page="fbdl" type="button">Coming Soon</button></div>
 </article>
 </div>
 </div>
 <section aria-label="Latest Liquid Sports content" class="home-cms-panels">
-<article class="home-panel is-empty" id="homeNewsPanel"><header><div><span class="eyebrow orange-text">LATEST</span><h2>News</h2></div><button class="text-link" data-page="news">View all →</button></header><div class="mini-feed" id="homeNews"></div></article>
-<article class="home-panel is-empty" id="homeVideoPanel"><header><div><span class="eyebrow blue-text">WATCH</span><h2>Video</h2></div><button class="text-link" data-page="videos">View all →</button></header><div class="mini-feed media-mini" id="homeVideos"></div></article>
-<article class="home-panel is-empty" id="homeMediaPanel"><header><div><span class="eyebrow green-text">DOWNLOAD</span><h2>Media</h2></div><button class="text-link" data-page="media">View all →</button></header><div class="mini-feed" id="homeMedia"></div></article>
+<article class="home-panel is-empty" id="homeNewsPanel"><header><div><span class="eyebrow orange-text">LATEST</span><h2>News</h2></div><button aria-controls="news" class="text-link" data-page="news" type="button">View all →</button></header><div class="mini-feed" id="homeNews"></div></article>
+<article class="home-panel is-empty" id="homeVideoPanel"><header><div><span class="eyebrow blue-text">WATCH</span><h2>Video</h2></div><button aria-controls="videos" class="text-link" data-page="videos" type="button">View all →</button></header><div class="mini-feed media-mini" id="homeVideos"></div></article>
+<article class="home-panel is-empty" id="homeMediaPanel"><header><div><span class="eyebrow green-text">DOWNLOAD</span><h2>Media</h2></div><button aria-controls="media" class="text-link" data-page="media" type="button">View all →</button></header><div class="mini-feed" id="homeMedia"></div></article>
 </section>
 <section class="guide-shelf">
 <div class="section-heading"><div><span class="eyebrow">PLAYER VALUE</span><h2>Strategy &amp; Media Guides</h2></div><p>Magazine-style deep dives designed to help you play better.</p></div>
 <div class="guide-grid guide-grid-two">
-<a class="guide-card guide-football" href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank"><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/><div><span>FBFL</span><h3>Football Strategy Guide</h3><p>Two-page player guide: program building, weekly planning and winning football habits.</p><strong>Open PDF ↗</strong></div></a>
-<a class="guide-card guide-basketball" href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank"><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/><div><span>FBBL</span><h3>Basketball Strategy Guide</h3><p>Two-page player guide: rotation management, weekly priorities and winning basketball habits.</p><strong>Open PDF ↗</strong></div></a>
+<a class="guide-card guide-football" href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank"><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/><div><span>FBFL</span><h3>Football Strategy Guide</h3><p>Two-page player guide: program building, weekly planning and winning football habits.</p><strong>Open PDF ↗</strong></div></a>
+<a class="guide-card guide-basketball" href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank"><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/><div><span>FBBL</span><h3>Basketball Strategy Guide</h3><p>Two-page player guide: rotation management, weekly priorities and winning basketball habits.</p><strong>Open PDF ↗</strong></div></a>
 </div>
-</section><section class="home-merch-spotlight"><div class="merch-logo-wrap"><img alt="Liquid Sports logo" src="/assets/liquid-sports-logo.webp"/></div><div class="merch-copy"><span class="eyebrow orange-text">OFFICIAL LIQUID SPORTS MERCH</span><h2>Rep the Liquid Universe.</h2><p>The official merchandise store is live. New designs and products can be added to the store without rebuilding this website.</p><a class="button orange" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Official Merchandise ↗</a></div></section>
+</section><section class="home-merch-spotlight"><div class="merch-logo-wrap"><img alt="Liquid Sports logo" decoding="async" loading="lazy" src="/assets/liquid-sports-logo.webp"/></div><div class="merch-copy"><span class="eyebrow orange-text">OFFICIAL LIQUID SPORTS MERCH</span><h2>Rep the Liquid Universe.</h2><p>The official merchandise store is live. New designs and products can be added to the store without rebuilding this website.</p><a class="button orange" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Official Merchandise ↗</a></div></section>
 </section>
 <section aria-labelledby="gamesTitle" class="page multi-sport-page" id="games">
 <div class="page-head"><span class="eyebrow">GAMES</span><h1 id="gamesTitle">Choose your universe.</h1><p>Football on the left, basketball in the middle, baseball on the right — the same Liquid Sports order everywhere.</p></div><div aria-label="Fake Ballers league family" class="league-family-lockup league-family-logos">
-<img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/>
-<img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/>
-<img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/>
+<img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/>
+<img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/>
+<img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/>
 </div>
 <div class="sport-lane-grid">
-<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Manager</h2><p>Live now. Build a football program through the full Liquid Sports management loop.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Football ↗</a><button class="button ghost" data-page="fbfl">View FBFL Page</button></article>
-<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Manager</h2><p>Live now. Build a basketball dynasty with recruiting, training, academics and live coaching decisions.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Basketball ↗</a><button class="button ghost" data-page="fbbl">View FBBL Page</button></article>
-<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Manager</h2><p>Coming soon to the public site. The Diamond League is being prepared as the third Liquid Sports management universe.</p><button class="button green" data-page="fbdl">Coming Soon</button></article>
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" decoding="async" loading="lazy" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Manager</h2><p>Live now. Build a football program through the full Liquid Sports management loop.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Football ↗</a><button aria-controls="fbfl" class="button ghost" data-page="fbfl" type="button">View FBFL Page</button></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" decoding="async" loading="lazy" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Manager</h2><p>Live now. Build a basketball dynasty with recruiting, training, academics and live coaching decisions.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Basketball ↗</a><button aria-controls="fbbl" class="button ghost" data-page="fbbl" type="button">View FBBL Page</button></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Manager</h2><p>Coming soon to the public site. The Diamond League is being prepared as the third Liquid Sports management universe.</p><button aria-controls="fbdl" class="button green" data-page="fbdl" type="button">Coming Soon</button></article>
 </div>
 </section>
 <section aria-labelledby="onlineTitle" class="page multi-sport-page" id="online">
 <div class="page-head"><span class="eyebrow">ONLINE LEAGUES</span><h1 id="onlineTitle">Shared competition, official results.</h1><p>Online League Dynasty lives inside the individual games. The Liquid Sports site explains the system and routes coaches to the correct game.</p></div>
 <div class="sport-lane-grid online-grid">
-<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Online League</h2><ul><li>Claim existing programs</li><li>Shared schedule and standings</li><li>Official league results</li><li>Commissioner control</li><li>Shared recruiting and offseason markets</li></ul><a class="button orange" href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBFL ↗</a></article>
-<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Online League</h2><ul><li>Human + CPU programs</li><li>Shared competition calendar</li><li>League-authoritative standings</li><li>Commissioner advancement</li><li>Shared recruiting and Transfer Station</li></ul><a class="button blue" href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBBL ↗</a></article>
-<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Online League</h2><ul><li>Shared Diamond League concept</li><li>Commissioner-controlled competition</li><li>Official results and markets</li><li>Integrated with the FBDL universe</li></ul><button class="button green" data-page="fbdl">Coming Soon</button></article>
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" decoding="async" loading="lazy" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>FBFL Online League</h2><ul><li>Claim existing programs</li><li>Shared schedule and standings</li><li>Official league results</li><li>Commissioner control</li><li>Shared recruiting and offseason markets</li></ul><a class="button orange" href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBFL ↗</a></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" decoding="async" loading="lazy" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>FBBL Online League</h2><ul><li>Human + CPU programs</li><li>Shared competition calendar</li><li>League-authoritative standings</li><li>Commissioner advancement</li><li>Shared recruiting and Transfer Station</li></ul><a class="button blue" href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Online Guide ↗</a><a class="button ghost" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Enter FBBL ↗</a></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>FBDL Online League</h2><ul><li>Shared Diamond League concept</li><li>Commissioner-controlled competition</li><li>Official results and markets</li><li>Integrated with the FBDL universe</li></ul><button aria-controls="fbdl" class="button green" data-page="fbdl" type="button">Coming Soon</button></article>
 </div>
 </section>
 <section aria-labelledby="instructionsTitle" class="page multi-sport-page" id="instructions">
 <div class="page-head"><span class="eyebrow">INSTRUCTIONS</span><h1 id="instructionsTitle">Learn the systems. Play with purpose.</h1><p>Official guides and short videos for game, classroom and online-league use.</p></div>
 <div class="sport-lane-grid instruction-grid">
-<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>Football</h2><div class="resource-list"><a href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Football_Game_Instructions.pdf?v=20260826-2" target="_blank">Game Guide</a><a href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online League Guide</a><a href="/docs/Liquid_Football_Teacher_Instructions.pdf?v=20260826-2" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Football_Student_Instructions.pdf?v=20260826-2" target="_blank">Student Guide</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy Media Guide</a></div></article>
-<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>Basketball</h2><div class="resource-list"><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Basketball_Game_Instructions.pdf?v=20260826-2" target="_blank">Game Guide</a><a href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" target="_blank">Online League Guide</a><a href="/docs/Liquid_Basketball_Teacher_Instructions.pdf?v=20260826-2" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Basketball_Student_Instructions.pdf?v=20260826-2" target="_blank">Student Guide</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy Media Guide</a></div></article>
-<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>Baseball</h2><div class="resource-list"><a href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">FBDL Game Guide</a><span>Additional classroom and online materials will be added with the public FBDL launch.</span></div></article>
+<article class="sport-lane lane-football"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Football logo" decoding="async" loading="lazy" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/></div><h2>Football</h2><div class="resource-list"><a href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Football_Game_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Game Guide</a><a href="/docs/Liquid_Football_Online_League_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Online League Guide</a><a href="/docs/Liquid_Football_Teacher_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Football_Student_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Student Guide</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" rel="noopener noreferrer" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Strategy Media Guide</a></div></article>
+<article class="sport-lane lane-basketball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Basketball logo" decoding="async" loading="lazy" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/></div><h2>Basketball</h2><div class="resource-list"><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Complete Instructions</a><a href="/docs/Liquid_Basketball_Game_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Game Guide</a><a href="/docs/Liquid_Basketball_Online_League_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Online League Guide</a><a href="/docs/Liquid_Basketball_Teacher_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Teacher Guide</a><a href="/docs/Liquid_Basketball_Student_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Student Guide</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" rel="noopener noreferrer" target="_blank">How-to Video</a><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Strategy Media Guide</a></div></article>
+<article class="sport-lane lane-baseball"><div class="lane-image"></div><div class="brand-pair lane-brand-pair"><img alt="Liquid Baseball logo" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/></div><h2>Baseball</h2><div class="resource-list"><a href="/docs/Liquid_Baseball_Game_Instructions.pdf" rel="noopener noreferrer" target="_blank">FBDL Game Guide</a><span>Additional classroom and online materials will be added with the public FBDL launch.</span></div></article>
 </div>
 </section>
 <section aria-labelledby="newsTitle" class="page content-page" id="news">
@@ -343,20 +378,20 @@
 <div class="cms-lane-grid" id="mediaLanes"></div>
 </section>
 <section aria-labelledby="fbflTitle" class="page individual-page football-page" id="fbfl">
-<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Football logo" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" src="/assets/fake-ballers-fbfl-logo.webp"/></div><div><span class="eyebrow">LIQUID FOOTBALL</span><h1 id="fbflTitle">FBFL Manager</h1><p>Fake Ballers Football League • Recruit. Train. Compete.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
-<div class="individual-columns"><article><h2>Build the program</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, scouting, training, schemes and career outcomes all connect to the weekly football loop.</p></article><article><h2>Player resources</h2><a href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy &amp; Media Guide ↗</a><a href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions ↗</a><a href="/video/Liquid_Football_How_to_Play_Short.mp4" target="_blank">How-to Video ↗</a></article></div>
-<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-football-league.onrender.com/" loading="lazy" title="FBFL Manager"></iframe></div>
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Football logo" decoding="async" loading="lazy" src="/assets/liquid-football-logo.webp"/><img alt="Fake Ballers Football League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbfl-logo.webp"/></div><div><span class="eyebrow">LIQUID FOOTBALL</span><h1 id="fbflTitle">FBFL Manager</h1><p>Fake Ballers Football League • Recruit. Train. Compete.</p><a class="button orange" href="https://fake-ballers-football-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
+<div class="individual-columns"><article><h2>Build the program</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, scouting, training, schemes and career outcomes all connect to the weekly football loop.</p></article><article class="resource-card"><h2>Player resources</h2><a class="resource-button" href="/docs/Liquid_Sports_FBFL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Strategy &amp; Media Guide ↗</a><a class="resource-button" href="/docs/Liquid_Football_Complete_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Complete Instructions ↗</a><a class="resource-button" href="/video/Liquid_Football_How_to_Play_Short.mp4" rel="noopener noreferrer" target="_blank">How-to Video ↗</a></article></div>
+<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-football-league.onrender.com/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="FBFL Manager"></iframe></div>
 </section>
 <section aria-labelledby="fbblTitle" class="page individual-page basketball-page" id="fbbl">
-<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Basketball logo" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" src="/assets/fake-ballers-fbbl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASKETBALL</span><h1 id="fbblTitle">FBBL Manager</h1><p>Fake Ballers Basketball League • Recruit. Train. Compete.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
-<div class="individual-columns"><article><h2>Build the dynasty</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, matchup scouting, training, rotation management and coach career all matter.</p></article><article><h2>Player resources</h2><a href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" target="_blank">Strategy &amp; Media Guide ↗</a><a href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" target="_blank">Complete Instructions ↗</a><a href="/video/Liquid_Basketball_How_to_Play_Short.mp4" target="_blank">How-to Video ↗</a></article></div>
-<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-basketball-league.onrender.com/" loading="lazy" title="FBBL Manager"></iframe></div>
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Basketball logo" decoding="async" loading="lazy" src="/assets/liquid-basketball-logo.webp"/><img alt="Fake Ballers Basketball League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbbl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASKETBALL</span><h1 id="fbblTitle">FBBL Manager</h1><p>Fake Ballers Basketball League • Recruit. Train. Compete.</p><a class="button blue" href="https://fake-ballers-basketball-league.onrender.com/" rel="noopener noreferrer" target="_blank">Play Fullscreen ↗</a></div></div>
+<div class="individual-columns"><article><h2>Build the dynasty</h2><p>Recruiting distance, fictional GIS, academics, graduation, sponsorships, budget, Transfer Station, community service, matchup scouting, training, rotation management and coach career all matter.</p></article><article class="resource-card"><h2>Player resources</h2><a class="resource-button" href="/docs/Liquid_Sports_FBBL_Manager_Strategy_Media_Guide.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Strategy &amp; Media Guide ↗</a><a class="resource-button" href="/docs/Liquid_Basketball_Complete_Instructions.pdf?v=20260826-2" rel="noopener noreferrer" target="_blank">Complete Instructions ↗</a><a class="resource-button" href="/video/Liquid_Basketball_How_to_Play_Short.mp4" rel="noopener noreferrer" target="_blank">How-to Video ↗</a></article></div>
+<div class="game-embed"><iframe allowfullscreen="" data-src="https://fake-ballers-basketball-league.onrender.com/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="FBBL Manager"></iframe></div>
 </section>
 <section aria-labelledby="fbdlTitle" class="page individual-page baseball-page" id="fbdl">
-<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Baseball logo" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" src="/assets/fake-ballers-fbdl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASEBALL</span><h1 id="fbdlTitle">FBDL Manager</h1><p>Fake Ballers Diamond League • Public launch coming soon.</p><span class="coming-pill">COMING SOON</span></div></div>
-<div class="fbdl-coming"><img alt="FBDL Manager coming soon promotional graphic" src="/assets/liquid-baseball-logo-card.webp"/><div><h2>Baseball is joining the universe.</h2><p>FBDL Manager is being prepared as the third public game in the Liquid Sports universe, with roster construction, development, situational baseball and long-term program management at its core.</p><a class="button ghost" href="/docs/Liquid_Baseball_Game_Instructions.pdf" target="_blank">Game Guide ↗</a></div></div>
+<div class="individual-hero"><div class="brand-pair individual-brand-pair"><img alt="Liquid Baseball logo" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo.webp"/><img alt="Fake Ballers Diamond League logo" decoding="async" loading="lazy" src="/assets/fake-ballers-fbdl-logo.webp"/></div><div><span class="eyebrow">LIQUID BASEBALL</span><h1 id="fbdlTitle">FBDL Manager</h1><p>Fake Ballers Diamond League • Public launch coming soon.</p><span class="coming-pill">COMING SOON</span></div></div>
+<div class="fbdl-coming"><img alt="FBDL Manager coming soon promotional graphic" decoding="async" loading="lazy" src="/assets/liquid-baseball-logo-card.webp"/><div><h2>Baseball is joining the universe.</h2><p>FBDL Manager is being prepared as the third public game in the Liquid Sports universe, with roster construction, development, situational baseball and long-term program management at its core.</p><a class="button ghost" href="/docs/Liquid_Baseball_Game_Instructions.pdf" rel="noopener noreferrer" target="_blank">Game Guide ↗</a></div></div>
 </section>
-<section aria-labelledby="merchTitle" class="page merch-page" id="merch"><div class="page-head merch-page-head"><span class="eyebrow">OFFICIAL MERCHANDISE</span><h1 id="merchTitle">Liquid Sports Merchandise</h1><p>Shop official Liquid Sports merchandise through the live store. Product selection, sizes, availability and new releases update at the store without changing this site.</p></div><div class="merch-hero"><div class="merch-brand-card"><img alt="Liquid Sports logo" src="/assets/liquid-sports-logo.webp"/><div><h2>Wear the universe.</h2><p>Liquid Sports is the master brand for the Fake Ballers football, basketball and diamond-league worlds. Merchandise opens in the official external store.</p><a class="button orange merch-shop-button" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Liquid Sports Merch ↗</a><small>Store inventory and checkout are managed by the merchandise storefront.</small></div></div><div class="merch-feature-grid"><article><h3>One permanent link</h3><p>The Liquid Sports site can keep pointing to the same store while merchandise changes over time.</p></article><article><h3>Liquid Universe branding</h3><p>Merchandise can feature Liquid Sports and the sport-specific Liquid identities while keeping the same core palette.</p></article><article><h3>Easy to expand</h3><p>New campaigns and designs can be launched in the store without changing the navigation or rebuilding this page.</p></article></div></div></section><section aria-labelledby="aboutTitle" class="page" id="about">
+<section aria-labelledby="merchTitle" class="page merch-page" id="merch"><div class="page-head merch-page-head"><span class="eyebrow">OFFICIAL MERCHANDISE</span><h1 id="merchTitle">Liquid Sports Merchandise</h1><p>Shop official Liquid Sports merchandise through the live store. Product selection, sizes, availability and new releases update at the store without changing this site.</p></div><div class="merch-hero"><div class="merch-brand-card"><img alt="Liquid Sports logo" decoding="async" loading="lazy" src="/assets/liquid-sports-logo.webp"/><div><h2>Wear the universe.</h2><p>Liquid Sports is the master brand for the Fake Ballers football, basketball and diamond-league worlds. Merchandise opens in the official external store.</p><a class="button orange merch-shop-button" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Liquid Sports Merch ↗</a><small>Store inventory and checkout are managed by the merchandise storefront.</small></div></div><div class="merch-feature-grid"><article><h3>One permanent link</h3><p>The Liquid Sports site can keep pointing to the same store while merchandise changes over time.</p></article><article><h3>Liquid Universe branding</h3><p>Merchandise can feature Liquid Sports and the sport-specific Liquid identities while keeping the same core palette.</p></article><article><h3>Easy to expand</h3><p>New campaigns and designs can be launched in the store without changing the navigation or rebuilding this page.</p></article></div></div></section><section aria-labelledby="aboutTitle" class="page" id="about">
 <div class="page-head"><span class="eyebrow">ABOUT LIQUID SPORTS</span><h1 id="aboutTitle">Original sports-management worlds and media.</h1><p>Liquid Sports is the master brand for the Liquid Universe. The Fake Ballers Leagues are its football, basketball and diamond-league competition brands.</p></div>
 <div class="about-grid"><article><h2>Fictional universe</h2><p>Programs, leagues, players, coaches, companies, facilities, sponsors, locations, statistics and events are fictional creative elements unless specifically identified otherwise. Similarity to real people, products or organizations is unintentional.</p></article><article><h2>Legal</h2><p><a href="/privacy.html">Privacy Policy</a><br/><a href="/terms.html">Terms of Service</a></p></article><article><h2>Merchandise</h2><p>Official Liquid Sports merchandise is available through the live store.</p><a class="button orange" href="https://www.bonfire.com/store/liquid-sports-merchandise/" rel="noopener noreferrer" target="_blank">Shop Merch ↗</a></article></div>
 </section><section aria-labelledby="contactTitle" class="page contact-page" id="contact"><div class="page-head">
@@ -380,29 +415,58 @@
 <aside aria-label="Advertisement" class="ad-rail ad-rail-right is-empty" id="rightAdRail"></aside>
 </div>
 <footer class="footer">
-<div class="footer-brand"><img alt="" src="/assets/liquid-sports-logo.webp"/><div><strong>Liquid Sports</strong><span>Manage. Compete. Win.</span></div></div>
-<div class="footer-links"><button data-page="contact">Contact Us</button><button class="nav-btn" data-page="merch">Merch</button><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+<div class="footer-brand"><img alt="" decoding="async" loading="lazy" src="/assets/liquid-sports-logo.webp"/><div><strong>Liquid Sports</strong><span>Manage. Compete. Win.</span></div></div>
+<div class="footer-links"><button aria-controls="contact" class="footer-action" data-page="contact" type="button">Contact Us</button><button aria-controls="merch" class="footer-action" data-page="merch" type="button">Merch</button><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
 <p>© 2026 Liquid Sports. Liquid Sports, Liquid Football, Liquid Basketball, Liquid Baseball, FBFL Manager, FBBL Manager, FBDL Manager, Fake Ballers Football League, Fake Ballers Basketball League, and Fake Ballers Diamond League. All rights reserved.</p>
 </footer>
 <dialog class="content-dialog" id="contentDialog"><button aria-label="Close" class="dialog-close" type="button">×</button><div id="dialogBody"></div></dialog>
-<script id="liquid-sports-menu-fallback">
+<script id="liquid-sports-accessibility-helper">
 document.addEventListener('DOMContentLoaded', function () {
   const topbar = document.querySelector('.topbar');
   const toggle = document.querySelector('.mobile-menu');
   const nav = document.querySelector('.primary-nav');
-  if (!topbar || !toggle || !nav) return;
+  const pages = Array.from(document.querySelectorAll('main .page[id]'));
+  const navButtons = Array.from(document.querySelectorAll('.primary-nav [data-page]'));
 
-  toggle.addEventListener('click', function () {
-    const open = topbar.classList.toggle('menu-open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
+  if (topbar && toggle && nav) {
+    toggle.addEventListener('click', function () {
+      const open = topbar.classList.toggle('menu-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    });
 
-  nav.addEventListener('click', function (event) {
-    if (event.target.closest('[data-page]')) {
-      topbar.classList.remove('menu-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-  });
+    nav.addEventListener('click', function (event) {
+      if (event.target.closest('[data-page]')) {
+        topbar.classList.remove('menu-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation');
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && topbar.classList.contains('menu-open')) {
+        topbar.classList.remove('menu-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation');
+        toggle.focus();
+      }
+    });
+  }
+
+  function syncActiveNav() {
+    const active = pages.find(function (page) { return page.classList.contains('active'); });
+    if (!active) return;
+    navButtons.forEach(function (button) {
+      const current = button.getAttribute('data-page') === active.id;
+      button.toggleAttribute('aria-current', current);
+      if (current) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  syncActiveNav();
+  const observer = new MutationObserver(syncActiveNav);
+  pages.forEach(function (page) { observer.observe(page, { attributes:true, attributeFilter:['class'] }); });
 });
 </script><script defer="" src="/site.js"></script>
 </body>
