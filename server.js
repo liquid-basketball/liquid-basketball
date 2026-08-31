@@ -17,6 +17,9 @@ const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const supabase = SUPABASE_URL && SERVICE_KEY ? createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
+const BETA_SUPABASE_URL = process.env.BETA_SUPABASE_URL || 'https://fieogjsweqshiichjrel.supabase.co';
+const BETA_SERVICE_KEY = process.env.BETA_SUPABASE_SERVICE_ROLE_KEY || '';
+const betaSupabase = BETA_SUPABASE_URL && BETA_SERVICE_KEY ? createClient(BETA_SUPABASE_URL, BETA_SERVICE_KEY, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
 
 app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
@@ -33,6 +36,7 @@ const adUpload = upload.single('asset');
 const sponsorUpload = upload.single('logo');
 
 function requireDb(res) { if (!supabase) { res.status(503).json({ error: 'CMS database is not configured on this server.' }); return false; } return true; }
+function requireBetaDb(res) { if (!betaSupabase) { res.status(503).json({ error: 'Beta results are stored safely in Supabase, but the private admin reader is not configured on this server yet. Add BETA_SUPABASE_SERVICE_ROLE_KEY in Render Environment.' }); return false; } return true; }
 function secureEqual(a, b) { const aa = Buffer.from(String(a || '')); const bb = Buffer.from(String(b || '')); return aa.length === bb.length && crypto.timingSafeEqual(aa, bb); }
 function requireAdmin(req, res, next) { if (!ADMIN_PASSWORD) return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured in Render.' }); const supplied = req.get('x-admin-password') || req.body?.admin_password || ''; if (!secureEqual(supplied, ADMIN_PASSWORD)) return res.status(401).json({ error: 'Incorrect admin password.' }); next(); }
 function cleanBaseName(name='file') { return String(name).normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/-+/g, '-').slice(-120) || 'file'; }
@@ -115,6 +119,22 @@ app.get('/api/game-sponsors',async(req,res)=>{
   if(error)return res.status(500).json({error:error.message});
   res.json(data||[]);
 });
+app.get('/api/admin/beta',requireAdmin,async(req,res)=>{
+  if(!requireBetaDb(res))return;
+  let q=betaSupabase.from('beta_test_submissions').select('*').order('created_at',{ascending:false}).limit(500);
+  const game=String(req.query.game||'').toUpperCase(); if(['FBBL','FBFL','BOTH'].includes(game))q=q.eq('game',game);
+  const status=String(req.query.status||'').toUpperCase(); if(['NEW','REVIEWED','RESOLVED'].includes(status))q=q.eq('status',status);
+  const {data,error}=await q; if(error)return res.status(500).json({error:error.message}); res.json(data||[]);
+});
+app.put('/api/admin/beta/:id',requireAdmin,async(req,res)=>{
+  if(!requireBetaDb(res))return;
+  const status=['NEW','REVIEWED','RESOLVED'].includes(String(req.body?.status||'').toUpperCase())?String(req.body.status).toUpperCase():'REVIEWED';
+  const admin_notes=clampText(req.body?.admin_notes,5000);
+  const patch={status,admin_notes:admin_notes||null,reviewed_at:status==='NEW'?null:new Date().toISOString()};
+  const {data,error}=await betaSupabase.from('beta_test_submissions').update(patch).eq('id',req.params.id).select('*').single();
+  if(error)return res.status(500).json({error:error.message}); res.json(data);
+});
+
 app.get('/api/admin/posts',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_posts').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
 app.get('/api/admin/ads',requireAdmin,async(_req,res)=>{ if(!requireDb(res))return; const {data,error}=await supabase.from('site_ads').select('*').order('updated_at',{ascending:false}); if(error)return res.status(500).json({error:error.message}); res.json(data||[]); });
 

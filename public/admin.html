@@ -10,7 +10,7 @@
   </div>
 
   <div id="cmsApp" class="cms-app hidden">
-    <aside class="sidebar"><div class="cms-brand"><img src="/assets/liquid-sports-logo.webp" alt=""><div><strong>Liquid Sports</strong><span>CMS Dashboard</span></div></div><nav><button class="side-tab active" data-tab="posts">News / Video / Media</button><button class="side-tab" data-tab="ads">Advertisements</button><button class="side-tab" data-tab="sponsors">Game Sponsors</button><button class="side-tab" data-tab="site">Site Text</button></nav><div class="side-note"><strong>CMS QUICK TIP</strong><p>Everything here can be added, edited, published/unpublished, or deleted. Front-page content is controlled by the Featured checkbox.</p></div></aside>
+    <aside class="sidebar"><div class="cms-brand"><img src="/assets/liquid-sports-logo.webp" alt=""><div><strong>Liquid Sports</strong><span>CMS Dashboard</span></div></div><nav><button class="side-tab active" data-tab="posts">News / Video / Media</button><button class="side-tab" data-tab="ads">Advertisements</button><button class="side-tab" data-tab="sponsors">Game Sponsors</button><button class="side-tab" data-tab="beta">Beta Testing</button><button class="side-tab" data-tab="site">Site Text</button></nav><div class="side-note"><strong>CMS QUICK TIP</strong><p>Everything here can be added, edited, published/unpublished, or deleted. Front-page content is controlled by the Featured checkbox.</p></div></aside>
     <main class="admin-main">
       <header class="admin-top"><div><span>WELCOME BACK</span><h1>Content Manager</h1></div><div class="top-actions"><a href="/" target="_blank">View Website ↗</a><button id="logoutBtn">Log Out</button></div></header>
 
@@ -31,6 +31,13 @@
         <div class="section-head"><div><h2>Game Sponsor Manager</h2><p>Add real sponsors once, then choose Football, Basketball, or Both. These sponsors can appear in Dynasty and Online play; Classroom and Old School sponsorship mode exclude them.</p></div><button id="newSponsorBtn" class="primary">+ Add Sponsor</button></div>
         <div class="ad-rules"><div><strong>PNG logo</strong><span>Optional. PNG only, maximum 5 MB.</span></div><div><strong>YouTube video</strong><span>Optional. Paste a YouTube link; no video file upload is needed.</span></div><div><strong>Two text cards</strong><span>Put copy under the image card, video card, or both. If there is no video, the image/text card takes priority.</span></div></div>
         <div id="sponsorsList" class="item-list"></div>
+      </section>
+
+      <section id="betaTab" class="admin-tab">
+        <div class="section-head"><div><h2>Beta Tester Results</h2><p>Private FBBL/FBFL reports submitted through the public beta form. Public testers cannot read these records.</p></div><div><button id="refreshBetaBtn" class="primary">Refresh</button></div></div>
+        <div class="stats"><div><strong id="betaCount">0</strong><span>Total loaded</span></div><div><strong id="betaNewCount">0</strong><span>New</span></div><div><strong id="betaIssueCount">0</strong><span>Reports with issues</span></div></div>
+        <div class="filters"><select id="betaGameFilter"><option value="">All games</option><option value="FBBL">FBBL Basketball</option><option value="FBFL">FBFL Football</option><option value="BOTH">Both</option></select><select id="betaStatusFilter"><option value="">All statuses</option><option value="NEW">New</option><option value="REVIEWED">Reviewed</option><option value="RESOLVED">Resolved</option></select><input id="betaSearch" placeholder="Search tester, notes, build... "></div>
+        <div id="betaConfigMsg" class="msg"></div><div id="betaList" class="item-list"></div>
       </section>
 
       <section id="siteTab" class="admin-tab">
